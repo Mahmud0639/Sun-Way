@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "643055294703",
+    "project_id": "sun-way-87e8c",
+    "storage_bucket": "sun-way-87e8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643055294703:android:e52083739650a30f04e31a",
+        "android_client_info": {
+          "package_name": "com.manuni.sunway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643055294703-s1u0m94ko9dd3dv94ukp2hj38ck2r9fk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWjEu15vi_TwYwCSTfn77qHAGu-mn0vY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643055294703-s1u0m94ko9dd3dv94ukp2hj38ck2r9fk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

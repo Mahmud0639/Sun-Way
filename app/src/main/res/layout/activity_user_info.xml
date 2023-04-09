@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserInfoActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <RelativeLayout
+            android:id="@+id/rel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_80mdp"
+            android:background="@drawable/toolbar"
+            android:padding="@dimen/_10mdp">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="User Info"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15font_mdp"
+                android:textStyle="bold" />
+
+
+
+
+        </RelativeLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel"
+            android:layout_marginTop="@dimen/_30mdp">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/personImageShow"
+                android:layout_width="@dimen/_80mdp"
+                android:layout_height="@dimen/_80mdp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_20mdp"
+                android:src="@drawable/ic_person"
+                app:civ_border_color="@color/colorGray02"
+                app:civ_border_width="@dimen/_2mdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/personImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_bg_blue"
+                android:src="@drawable/ic_take_photo"
+                app:layout_constraintEnd_toEndOf="@id/personImageShow"
+                app:layout_constraintTop_toTopOf="@id/personImageShow" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInputName"
+            android:layout_marginTop="@dimen/_12mdp"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            android:layout_below="@id/cons"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:helperTextTextColor="#919090"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperText="Your name">
+
+            <EditText
+                android:id="@+id/nameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_phone_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="Your name"
+                android:inputType="textPersonName"
+                android:padding="@dimen/_10mdp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textInputName"
+            android:layout_marginTop="@dimen/_5mdp"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:boxBackgroundMode="outline"
+            app:helperText="example@gmail.com"
+            app:helperTextTextColor="#919090"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/emailEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_mail_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="Enter Your Email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/_10mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090"
+               />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/registerBtnUser"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textInputEmail"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20mdp"
+            android:layout_marginBottom="@dimen/_10mdp"
+            android:background="@drawable/btn_style"
+            android:minWidth="@dimen/_120mdp"
+            android:text="Go Next"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingLottie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_rawRes="@raw/loading"
+            app:lottie_autoPlay="true"
+            android:visibility="invisible"
+            app:lottie_loop="true"/>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+</ScrollView>
