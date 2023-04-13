@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.PackageFragment">
+
+    <LinearLayout
+        android:id="@+id/infoLinear"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40mdp"
+        android:gravity="center"
+        android:background="@drawable/btn_style_rect"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/totalVip"
+            android:textSize="@dimen/_14font_mdp"
+            android:textColor="#FFEB3B"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total VIP:" />
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/packageRV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/infoLinear"
+        tools:listitem="@layout/vip_box" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

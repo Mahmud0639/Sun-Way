@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#FFEB3B"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:contentPadding="@dimen/_5mdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="@dimen/_3mdp"
+        app:cardUseCompatPadding="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/image"
+                android:layout_width="@dimen/_40mdp"
+                android:layout_height="@dimen/_40mdp"
+                android:src="@drawable/buy_red"/>
+
+            <TextView
+                android:id="@+id/lvTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LV1 300.00"
+                app:layout_constraintTop_toTopOf="@id/image"
+                app:layout_constraintStart_toEndOf="@id/image"
+                android:layout_marginStart="@dimen/_30mdp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/dailyTaskBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daily Tasks 1"
+                android:layout_marginTop="@dimen/_5mdp"
+                android:background="@drawable/btn_style"
+                app:layout_constraintTop_toBottomOf="@id/lvTxt"
+                app:layout_constraintStart_toStartOf="@id/lvTxt"
+                app:layout_constraintEnd_toEndOf="@id/lvTxt"
+                android:paddingStart="@dimen/_10mdp"
+                android:paddingEnd="@dimen/_10mdp"
+                android:paddingTop="@dimen/_2mdp"
+                android:paddingBottom="@dimen/_2mdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11font_mdp"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieLock"
+                android:layout_width="@dimen/_30mdp"
+                android:layout_height="@dimen/_30mdp"
+                app:layout_constraintTop_toTopOf="@id/dailyTaskBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:lottie_rawRes="@raw/lock_sun"
+                app:lottie_loop="false"
+                android:visibility="visible"
+                app:lottie_autoPlay="false"/>
+             <TextView
+                android:id="@+id/joinNowBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Join Now"
+                android:background="@drawable/join_btn_style"
+                app:layout_constraintTop_toTopOf="@id/lvTxt"
+                 app:layout_constraintEnd_toEndOf="parent"
+                android:paddingStart="@dimen/_10mdp"
+                android:paddingEnd="@dimen/_10mdp"
+                android:paddingTop="@dimen/_2mdp"
+                android:paddingBottom="@dimen/_2mdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11font_mdp"/>
+  <TextView
+                android:id="@+id/joinedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Joined"
+                android:visibility="invisible"
+                android:background="@drawable/join_btn_style"
+                app:layout_constraintTop_toTopOf="@id/lvTxt"
+                 app:layout_constraintEnd_toEndOf="parent"
+                android:paddingStart="@dimen/_10mdp"
+                android:paddingEnd="@dimen/_10mdp"
+                android:paddingTop="@dimen/_2mdp"
+                android:paddingBottom="@dimen/_2mdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11font_mdp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:layout_marginTop="@dimen/_5mdp"
+                android:padding="@dimen/_5mdp"
+                android:background="#54000000">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/perOrder"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$4.00"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Per Order"/>
+
+                </LinearLayout>
+                  <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/dailyProductPrice"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$4.00"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daily Product"/>
+
+                </LinearLayout>
+                  <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/monthlyIncomeTxt"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$120.00"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Monthly Income"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

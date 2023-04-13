@@ -2,6 +2,7 @@ package com.manuni.sunway;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.manuni.sunway.databinding.ActivityMainBinding;
+import com.manuni.sunway.fragments.HomeFragment;
+import com.manuni.sunway.fragments.PackageFragment;
+import com.manuni.sunway.fragments.ProfileFragment;
+import com.manuni.sunway.fragments.WalletFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
     ActivityMainBinding binding;
     private FirebaseAuth auth;
 
@@ -23,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         auth = FirebaseAuth.getInstance();
+
+
+        binding.bottomNav.setOnItemSelectedListener(this);
+
+        loadFragments(new HomeFragment());
+
 
         PopupMenu popupMenu = new PopupMenu(MainActivity.this,binding.moreBtn);
         popupMenu.getMenu().add("Logout");
@@ -54,24 +66,46 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private static final int TIME_INTERVAL = 2000;
-    private long mBackPressed;
-    @Override
-    public void onBackPressed() {
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
 
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-
-        } else {
-
-            Toast.makeText(getBaseContext(), "Press again to exit",
-                    Toast.LENGTH_SHORT).show();
+    public boolean loadFragments(Fragment fragment){
+        if (fragment != null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer,fragment).commit();
         }
 
-        mBackPressed = System.currentTimeMillis();
+        return true;
     }
 
+
+
+
+    @Override
+    public void onBackPressed() {
+        if (binding.bottomNav.getSelectedItemId()==R.id.home){
+            super.onBackPressed();
+            finish();
+        }else {
+            binding.bottomNav.setSelectedItemId(R.id.home);
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+        Fragment myFragment = null;
+        switch (item.getItemId()){
+            case R.id.home:
+                myFragment = new HomeFragment();
+                break;
+            case R.id.my_package:
+                myFragment = new PackageFragment();
+                break;
+            case R.id.wallet:
+                myFragment = new WalletFragment();
+                break;
+            case R.id.profile:
+                myFragment = new ProfileFragment();
+                break;
+        }
+        return loadFragments(myFragment);
+    }
 }
