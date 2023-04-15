@@ -1,16 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.WalletFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wallet Fragment"
-        android:layout_gravity="center"
-        android:textSize="@dimen/_30font_mdp"/>
+        tools:context=".fragments.WalletFragment">
 
-</FrameLayout>
+        <View
+            android:id="@+id/view7"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_80mdp"
+            android:background="@drawable/background_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_145mdp"
+            android:layout_marginStart="@dimen/_18mdp"
+            android:layout_marginLeft="@dimen/_18mdp"
+            android:layout_marginTop="@dimen/_24mdp"
+            android:layout_marginEnd="@dimen/_18mdp"
+            android:layout_marginRight="@dimen/_18mdp"
+            android:background="@drawable/rounded_box"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24mdp"
+            android:fontFamily="@font/roboto_light"
+            android:text="Current Balance"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/_13font_mdp"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toTopOf="@+id/view6" />
+
+        <TextView
+            android:id="@+id/currentCoins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10mdp"
+            android:layout_marginTop="@dimen/_13mdp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="$0.00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18font_mdp"
+            app:layout_constraintEnd_toEndOf="@+id/textView14"
+            app:layout_constraintStart_toStartOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_13mdp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/HowRequiredCoins"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12font_mdp"
+            app:layout_constraintEnd_toEndOf="@+id/currentCoins"
+            app:layout_constraintStart_toStartOf="@+id/currentCoins"
+            app:layout_constraintTop_toBottomOf="@+id/currentCoins" />
+        <TextView
+            android:id="@+id/healthyAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:layout_constraintTop_toBottomOf="@id/textView17"
+            app:layout_constraintStart_toStartOf="@id/view6"
+            app:layout_constraintEnd_toEndOf="@id/view6"
+            app:layout_constraintBottom_toBottomOf="@id/view6"
+            android:textColor="@color/red"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5mdp"
+            android:layout_marginEnd="@dimen/_13mdp"
+            android:layout_marginBottom="@dimen/_5mdp"
+            android:text="Please use TRC-20 method to get your payment"
+            android:gravity="center"
+            android:textColor="#E82424"
+            android:textSize="@dimen/_11font_mdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/paypalEmailBox"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/view6"
+            tools:ignore="SmallSp" />
+
+        <EditText
+            android:id="@+id/paypalEmailBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_33mdp"
+            android:background="@drawable/textbox"
+            android:drawableStart="@drawable/ic_payment_getway"
+            android:drawablePadding="@dimen/_8mdp"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:hint="TRC-20 address"
+            android:textColorHint="@color/hint_color"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:padding="@dimen/_10mdp"
+            app:layout_constraintBottom_toTopOf="@+id/sendRequest"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/view6"
+            app:layout_constraintVertical_bias="0.19"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="TextFields" />
+
+
+
+        <Button
+            android:id="@+id/sendRequest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14mdp"
+            android:background="@drawable/send_req_btn_twenty"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/send_request"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="@+id/paypalEmailBox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/paypalEmailBox"
+            app:layout_constraintTop_toBottomOf="@+id/paypalEmailBox" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="@dimen/_70mdp"
+            android:layout_height="@dimen/_70mdp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintEnd_toStartOf="@+id/textView14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView14"
+            app:lottie_rawRes="@raw/atmmachine"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:layout_constraintVertical_bias="0.31" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

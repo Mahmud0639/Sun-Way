@@ -10,6 +10,15 @@
 
     <color name="theme_color">#009688</color>
 
+    <color name="background_1_start">#009688</color>
+    <color name="background_2_end">#037C71</color>
+
+    <color name="hint_color">#B1ABAB</color>
+
+    <color name="background_2_start">#2196F3</color>
+    <color name="background_2_end_wallet">#0166C2</color>
+    <color name="light_grey">#F6F6F6</color>
+
     <color name="background_theme">#0A527E</color>
     <color name="colorGray01">#c9c9c9</color>
     <color name="colorGray02">#959595</color>
@@ -23,4 +32,5 @@
 
     <color name="red_deep">#C11212</color>
     <color name="blue">#2196F3</color>
+    <color name="red">#F44336</color>
 </resources>

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         loadFragments(new HomeFragment());
 
 
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this,binding.moreBtn);
+ /*       PopupMenu popupMenu = new PopupMenu(MainActivity.this,binding.moreBtn);
         popupMenu.getMenu().add("Logout");
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             public void onClick(View view) {
                 popupMenu.show();
             }
-        });
+        });*/
 
 
 

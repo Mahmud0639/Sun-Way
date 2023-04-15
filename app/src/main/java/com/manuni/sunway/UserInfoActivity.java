@@ -169,6 +169,9 @@ public class UserInfoActivity extends AppCompatActivity {
             hashMap.put("email",""+binding.emailEt.getText().toString().trim());
             hashMap.put("uid", "" + auth.getUid());
             hashMap.put("online", "true");
+            hashMap.put("balance","5.00");
+            hashMap.put("referCode","");
+            hashMap.put("adminMessage","Hi,Thanks for using our App.");
             hashMap.put("timestamp", "" + System.currentTimeMillis());
             hashMap.put("profileImage", "");
 
@@ -202,6 +205,9 @@ public class UserInfoActivity extends AppCompatActivity {
                     hashMap.put("email",""+binding.emailEt.getText().toString().trim());
                     hashMap.put("uid",""+auth.getUid());
                     hashMap.put("online","true");
+                    hashMap.put("balance","5.00");
+                    hashMap.put("referCode","");
+                    hashMap.put("adminMessage","Hi,Thanks for using our App.");
                     hashMap.put("timestamp",""+System.currentTimeMillis());
                     hashMap.put("profileImage",""+downloadUrl);
 

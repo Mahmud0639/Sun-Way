@@ -18,8 +18,8 @@
             android:name=".UserInfoActivity"
             android:exported="true"
             android:label="User Info"
-            android:theme="@style/Theme.SunWay.NoActionBar.Material"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:theme="@style/Theme.SunWay.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".GetOTPActivity"
             android:exported="false" />

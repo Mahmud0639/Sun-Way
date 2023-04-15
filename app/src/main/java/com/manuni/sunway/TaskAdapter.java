@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.sunway.databinding.WorkingPackSampleBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         PackageModel data = list.get(position);
 
         String packName = data.getLevelName();
+        String packImage = data.getPackImage();
 
 
         FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo")
@@ -73,6 +75,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             }
         });
+
+        try {
+            Picasso.get().load(packImage).placeholder(R.drawable.impl1).into(holder.binding.taskImage);
+        } catch (Exception e) {
+            holder.binding.taskImage.setImageResource(R.drawable.impl1);
+        }
 
         holder.binding.levelName.setText(data.getLevelName());
 

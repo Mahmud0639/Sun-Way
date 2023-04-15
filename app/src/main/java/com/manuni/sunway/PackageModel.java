@@ -1,15 +1,24 @@
 package com.manuni.sunway;
 
 public class PackageModel {
-    private String id,perOrderQuantity,levelName;
+    private String id,perOrderQuantity,levelName,packImage;
 
     public PackageModel() {
     }
 
-    public PackageModel(String id, String perOrderQuantity, String levelName) {
+    public PackageModel(String id, String perOrderQuantity, String levelName,String packImage) {
         this.id = id;
         this.perOrderQuantity = perOrderQuantity;
         this.levelName = levelName;
+        this.packImage = packImage;
+    }
+
+    public String getPackImage() {
+        return packImage;
+    }
+
+    public void setPackImage(String packImage) {
+        this.packImage = packImage;
     }
 
     public String getId() {
