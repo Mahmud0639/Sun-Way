@@ -1,6 +1,7 @@
 package com.manuni.sunway;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,36 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, ""+data.getLevelName(), Toast.LENGTH_SHORT).show();
+
+                FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo")
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+
+                                //Toast.makeText(context, ""+packName, Toast.LENGTH_SHORT).show();
+
+                                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                                    String status = ""+dataSnapshot.child(packName).getValue();
+                                    //  Toast.makeText(context, ""+status, Toast.LENGTH_SHORT).show();
+                                    if (status.equals("unlocked")){
+                                        Intent taskViewIntent = new Intent(context,TaskViewActivity.class);
+                                        context.startActivity(taskViewIntent);
+                                    }else if (status.equals("locked")){
+                                       return;
+                                    }
+
+                                }
+
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+
+                            }
+                        });
+               //  Toast.makeText(context, ""+data.getLevelName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
