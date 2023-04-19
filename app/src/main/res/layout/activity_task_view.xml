@@ -6,4 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".TaskViewActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/taskRV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:listitem="@layout/income_plate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

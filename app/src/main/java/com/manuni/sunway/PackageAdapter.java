@@ -45,6 +45,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
 
         String levelNameTxt = data.getLevelName();
         String perOrderTxt = data.getPerOrderQuantity();
+        String sellPrice = data.getSellingPrice();
 
      /*   FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").addValueEventListener(new ValueEventListener() {
             @Override
@@ -77,11 +78,12 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
                         if (levelValue.equals("unlocked")&&statusValue.equals("Joined")){
                             holder.binding.joinNowBtn.setVisibility(View.INVISIBLE);
                             holder.binding.joinedBtn.setVisibility(View.VISIBLE);
-                            holder.binding.lottieLock.setVisibility(View.INVISIBLE);
+                            holder.binding.lottieLockSmall.setVisibility(View.INVISIBLE);
+                            holder.binding.joinNowBtn.setText("Joined");
                         }else if (levelValue.equals("locked")&&statusValue.equals("Pending")){
                             holder.binding.joinNowBtn.setVisibility(View.VISIBLE);
                             holder.binding.joinedBtn.setVisibility(View.INVISIBLE);
-                            holder.binding.lottieLock.setVisibility(View.VISIBLE);
+                            holder.binding.lottieLockSmall.setVisibility(View.VISIBLE);
                             holder.binding.joinNowBtn.setText("Pending");
                         }
                     }
@@ -95,9 +97,21 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
         });
 
         holder.binding.lvTxt.setText(levelNameTxt);
-        holder.binding.perOrder.setText("$" + perOrderTxt + ".00");
 
-        holder.binding.dailyProductPrice.setText("$" + perOrderTxt + ".00");
+        double perOrderOf = Double.parseDouble(perOrderTxt);
+        double sellPriceOf = Double.parseDouble(sellPrice);
+
+
+       // holder.binding.perOrder.setText("$" + perOrderTxt + ".00");
+        holder.binding.perOrder.setText(String.format("$%.2f",perOrderOf));
+
+      //  holder.binding.dailyProductPrice.setText("$" + perOrderTxt + ".00");
+        holder.binding.dailyProductPrice.setText(String.format("$%.2f",perOrderOf));
+
+        holder.binding.priceBtn.setText(String.format("Price: $%.2f",sellPriceOf));
+
+
+
 
         try {
             double perOrderInDouble = Double.parseDouble(perOrderTxt);
@@ -132,6 +146,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
                     hashMap.put("packKey",""+myKey);
                     hashMap.put("packId",""+uidUser);
                     hashMap.put("status","Pending");
+                    hashMap.put("taskTaken","false");
                     hashMap.put("packName",""+levelNameTxt);
                     hashMap.put("userId",""+auth.getUid());
 

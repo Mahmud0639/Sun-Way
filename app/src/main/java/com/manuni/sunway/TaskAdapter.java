@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.sunway.databinding.WorkingPackSampleBinding;
@@ -24,6 +25,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private Context context;
     private ArrayList<PackageModel> list;
     private FirebaseAuth auth;
+    private  String status;
 
     public TaskAdapter(Context context, ArrayList<PackageModel> list) {
         this.context = context;
@@ -85,9 +87,59 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         holder.binding.levelName.setText(data.getLevelName());
 
-
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (holder.binding.viewBack.isEnabled()){
+                    Intent taskViewIntent = new Intent(context,TaskViewActivity.class);
+                    taskViewIntent.putExtra("myLevelName",""+packName);
+                    context.startActivity(taskViewIntent);
+                }else if (!holder.binding.viewBack.isEnabled()){
+                    return;
+                }
+
+
+/*
+                DatabaseReference myDBRef = FirebaseDatabase.getInstance().getReference().child("Users");
+                myDBRef.child(auth.getUid()).child("userPackInfo").orderByChild("packName").equalTo(packName).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                                status = ""+dataSnapshot.child(packName).getValue();
+                               // Toast.makeText(context, ""+status, Toast.LENGTH_SHORT).show();
+                            }
+                            if (status.equals("unlocked")){
+                                Intent taskViewIntent = new Intent(context,TaskViewActivity.class);
+                                taskViewIntent.putExtra("myLevelName",""+packName);
+                                context.startActivity(taskViewIntent);
+                            }else if (status.equals("locked")){
+                                return;
+                            }
+
+                        }else {
+                            Toast.makeText(context, "Please buy a task first.", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
+
+                    }
+
+
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+
+                    }
+                });*/
+            }
+        });
+
+
+
+      /*  holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -103,6 +155,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                     //  Toast.makeText(context, ""+status, Toast.LENGTH_SHORT).show();
                                     if (status.equals("unlocked")){
                                         Intent taskViewIntent = new Intent(context,TaskViewActivity.class);
+                                        taskViewIntent.putExtra("myLevelName",""+packName);
                                         context.startActivity(taskViewIntent);
                                     }else if (status.equals("locked")){
                                        return;
@@ -121,7 +174,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                         });
                //  Toast.makeText(context, ""+data.getLevelName(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @Override
