@@ -102,7 +102,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
 //ekhane problem ta thik korte hobe...problem ta holo back press korle bar bar same tai ashe...
 
         holder.binding.buyBtn.setOnClickListener(new View.OnClickListener() {
-           // .orderByChild("packName").equalTo(packageLevelName).
+            // .orderByChild("packName").equalTo(packageLevelName).
             @Override
             public void onClick(View view) {
                 FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").orderByChild("packName").equalTo(packageLevelName).addValueEventListener(new ValueEventListener() {
@@ -132,6 +132,8 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
 
                                 }
                             });
+                        }else {
+                            Toast.makeText(context, "Buy first to get into it.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -194,7 +196,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                     holder.binding.myProgress.setVisibility(View.GONE);
                                     Toast.makeText(context, "Income added.", Toast.LENGTH_SHORT).show();
 
-                                   // Toast.makeText(context, "" + packageLevelName, Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(context, "" + packageLevelName, Toast.LENGTH_SHORT).show();
 
 
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").child(packKeyOfI).addListenerForSingleValueEvent(new ValueEventListener() {

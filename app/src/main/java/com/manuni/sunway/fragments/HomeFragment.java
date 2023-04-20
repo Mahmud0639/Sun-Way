@@ -21,6 +21,8 @@ import com.manuni.sunway.TaskAdapter;
 import com.manuni.sunway.TaskModel;
 import com.manuni.sunway.databinding.FragmentHomeBinding;
 
+import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
+
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -62,6 +64,7 @@ public class HomeFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         loadTaskPack();
+        carouselData();
 
 
 
@@ -69,6 +72,31 @@ public class HomeFragment extends Fragment {
 
 
         return binding.getRoot();
+    }
+
+    private void carouselData() {
+
+        DatabaseReference myD = FirebaseDatabase.getInstance().getReference().child("SliderImages");
+        myD.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        String slierImages = ""+dataSnapshot.child("slider").getValue();
+                        String titleText = ""+dataSnapshot.child("title").getValue();
+                        binding.carousel.addData(new CarouselItem(slierImages,titleText));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+
+
     }
 
     private void loadTaskPack() {
