@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#28FFEB3B"
+    tools:context=".PayToJoinActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/rechargeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20mdp"
+            android:text="Recharge QR code"
+            android:textSize="@dimen/_17font_mdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/qrCode"
+            android:layout_width="@dimen/_170mdp"
+            android:layout_height="@dimen/_170mdp"
+            android:layout_marginTop="@dimen/_10mdp"
+            android:src="@drawable/qr"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rechargeTxt" />
+
+        <TextView
+            android:id="@+id/trcAddress"
+            android:layout_width="@dimen/_200mdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_25mdp"
+            android:layout_marginTop="@dimen/_30mdp"
+            android:background="@drawable/box_style"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/_5mdp"
+            android:text="TTXL2JKKHJLDRERC2lfjskldjgfgfgdfdfdfdfd"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toStartOf="@+id/copyBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/qrCode" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/copyBtn"
+            android:layout_width="@dimen/_40mdp"
+            android:layout_height="@dimen/_26mdp"
+            android:layout_marginStart="@dimen/_7mdp"
+            android:background="@drawable/btn_style_copy"
+            android:text="Copy"
+            android:textAllCaps="false"
+            android:textColor="#F8F1B7"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/trcAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/trcAddress"
+            app:layout_constraintTop_toTopOf="@id/trcAddress" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submitBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_27mdp"
+            android:layout_marginTop="@dimen/_7mdp"
+            android:background="@drawable/btn_style_rect"
+            android:backgroundTint="#03A9F4"
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:textColor="#F8F1B7"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/copyBtn"
+            app:layout_constraintStart_toStartOf="@id/trcAddress"
+            app:layout_constraintTop_toBottomOf="@id/trcAddress" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10mdp"
+            android:background="@drawable/notice_bg"
+            android:padding="@dimen/_5mdp"
+            android:text="Please make sure your deposit network is USDT-TRC20, other network assets cannot be retrieved after depositing"
+            android:textColor="#41000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/_5mdp"
+            app:layout_constraintEnd_toEndOf="@id/submitBtn"
+            app:layout_constraintStart_toStartOf="@id/submitBtn"
+            app:layout_constraintTop_toBottomOf="@id/submitBtn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+</ScrollView>

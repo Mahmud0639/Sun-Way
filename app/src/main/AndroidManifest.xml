@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SunWay">
         <activity
+            android:name=".PayToJoinActivity"
+            android:exported="false" />
+        <activity
             android:name=".TaskViewActivity"
             android:exported="false" />
         <activity

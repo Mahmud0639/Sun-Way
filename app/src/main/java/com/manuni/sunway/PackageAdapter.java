@@ -1,6 +1,7 @@
 package com.manuni.sunway;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +127,24 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
             @Override
             public void onClick(View view) {
 
-                if (holder.binding.joinNowBtn.getText().toString().equals("Pending")){
+                String text = holder.binding.joinNowBtn.getText().toString();
+                if (text.equals("Pending")){
+                    return;
+                }else {
+                    String uidUser = data.getId();
+                    String price = data.getSellingPrice();
+
+                    Intent joinIntent = new Intent(context,PayToJoinActivity.class);
+                    joinIntent.putExtra("packId",""+uidUser);
+                    joinIntent.putExtra("packName",""+levelNameTxt);
+                    joinIntent.putExtra("price",""+price);
+                    context.startActivity(joinIntent);
+
+                }
+
+
+
+               /* if (holder.binding.joinNowBtn.getText().toString().equals("Pending")){
                     Toast.makeText(context, "Your order is in processing...", Toast.LENGTH_SHORT).show();
                 }else if (holder.binding.joinNowBtn.getText().toString().equals("Joined")){
                     Toast.makeText(context, "You have already joined.", Toast.LENGTH_SHORT).show();
@@ -161,7 +179,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
                             Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }
+                }*/
 
 
             }
