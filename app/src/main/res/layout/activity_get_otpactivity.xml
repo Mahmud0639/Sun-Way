@@ -44,4 +44,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <Button
+        android:id="@+id/resendCodeBtn"
+        android:layout_width="@dimen/_80mdp"
+        android:layout_height="@dimen/_30mdp"
+        android:background="@drawable/btn_style_rect"
+        android:paddingStart="@dimen/_5mdp"
+        android:paddingEnd="@dimen/_5mdp"
+        app:layout_constraintTop_toBottomOf="@id/countTimer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_3mdp"
+        android:text="Resend Code"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        android:textAllCaps="false"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,6 +60,7 @@ public class PayToJoinActivity extends AppCompatActivity {
                 hashMap.put("packKey",""+myKey);
                 hashMap.put("packId",""+packId);
                 hashMap.put("status","Pending");
+                hashMap.put("price",""+price);
                 hashMap.put("taskTaken","false");
                 hashMap.put("packName",""+packName);
                 hashMap.put("userId",""+auth.getUid());

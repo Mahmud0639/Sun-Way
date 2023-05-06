@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class GetOTPActivity extends AppCompatActivity {
     ActivityGetOtpactivityBinding binding;
     private FirebaseAuth auth;
+    private PhoneAuthProvider.ForceResendingToken forceResendingTokenOf;
 
     private String phoneNumber;
     private String otpId;
@@ -37,7 +38,7 @@ public class GetOTPActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        timer = new CountDownTimer(30000,1000) {
+        timer = new CountDownTimer(60000,1000) {
             @Override
             public void onTick(long l) {
                 binding.countTimer.setText(String.valueOf(l / 1000));
@@ -47,6 +48,7 @@ public class GetOTPActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 binding.countTimer.setText("00:00");
+                binding.resendCodeBtn.setVisibility(View.VISIBLE);
             }
         };
 
@@ -74,10 +76,39 @@ public class GetOTPActivity extends AppCompatActivity {
             }
         });
 
+        binding.resendCodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    resendVerificationCode(phoneNumber,forceResendingTokenOf);
+            }
+        });
+
         //auth.getCurrentUser().getPhoneNumber();
 
 
 
+    }
+
+    public void resendVerificationCode(String phoneNumber,
+                                       PhoneAuthProvider.ForceResendingToken token) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,           //a reference to an activity if this method is in a custom service
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                        signInWithPhoneAuthCredential(phoneAuthCredential);
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+
+                    }
+                },
+                token);        // resending with token got at previous call's `callbacks` method `onCodeSent`
+        // [END start_phone_auth]
     }
 
     private void initOTP() {
@@ -86,6 +117,7 @@ public class GetOTPActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(String s,PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 otpId = s;
+                forceResendingTokenOf = forceResendingToken;
             }
 
             @Override

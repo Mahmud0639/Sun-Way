@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         app:contentPadding="@dimen/_5mdp"
         app:cardCornerRadius="@dimen/_5mdp"
+        android:layout_margin="@dimen/_2mdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="@dimen/_3mdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 

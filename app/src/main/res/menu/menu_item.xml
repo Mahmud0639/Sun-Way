@@ -9,6 +9,9 @@
     <item android:id="@+id/wallet"
         android:title="Wallet"
         android:icon="@drawable/ic_wallet"/>
+    <item android:id="@+id/rank"
+        android:title="Rank"
+        android:icon="@drawable/ic_rank"/>
     <item android:id="@+id/profile"
         android:title="Profile"
         android:icon="@drawable/ic_profile_circle"/>

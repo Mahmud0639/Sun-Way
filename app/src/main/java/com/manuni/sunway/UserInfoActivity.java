@@ -17,10 +17,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.manuni.sunway.databinding.ActivityUserInfoBinding;
@@ -35,6 +37,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private StorageReference storageReference;
+    private FirebaseFirestore firestore;
 
 
     @Override
@@ -44,6 +47,7 @@ public class UserInfoActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -182,8 +186,21 @@ public class UserInfoActivity extends AppCompatActivity {
                 //dialogForAccount.dismiss();
                 try {
                     binding.loadingLottie.setVisibility(View.GONE);
-                    startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
-                    finish();
+
+                    UsersData usersData = new UsersData(binding.nameET.getText().toString().trim(),phoneNumber,binding.emailEt.getText().toString().trim(),auth.getUid(),
+                            "true","","0","Hi,Thanks for using our App.",""+System.currentTimeMillis(),"");
+
+                    firestore.collection("users")
+                            .document(auth.getUid())
+                            .set(usersData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(Task<Void> task) {
+                            if (task.isSuccessful()){
+                                startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
+                                finish();
+                            }
+                        }
+                    });
                 } catch (Exception e) {
                     binding.loadingLottie.setVisibility(View.GONE);
                     e.printStackTrace();
@@ -195,6 +212,7 @@ public class UserInfoActivity extends AppCompatActivity {
        String filePathAndName = "profile_images/"+""+auth.getUid();
             storageReference.child(filePathAndName).putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+
 
                 while (!uriTask.isSuccessful());
                 Uri downloadUrl = uriTask.getResult();
@@ -218,8 +236,21 @@ public class UserInfoActivity extends AppCompatActivity {
                        // dialogForAccount.dismiss();
                         try {
                             binding.loadingLottie.setVisibility(View.GONE);
-                            startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
-                            finish();
+
+                            UsersData usersData = new UsersData(binding.nameET.getText().toString().trim(),phoneNumber,binding.emailEt.getText().toString().trim(),auth.getUid(),
+                                    "true","","0","Hi,Thanks for using our App.",""+System.currentTimeMillis(),""+downloadUrl);
+                            firestore.collection("users")
+                                    .document(auth.getUid())
+                                    .set(usersData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
+                                        finish();
+                                    }
+                                }
+                            });
+
                         } catch (Exception e) {
                             binding.loadingLottie.setVisibility(View.GONE);
                             e.printStackTrace();

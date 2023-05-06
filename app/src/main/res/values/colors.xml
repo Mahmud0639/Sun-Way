@@ -26,6 +26,8 @@
     <color name="colorRed">#F84242</color>
     <color name="colorGray00">#70959595</color>
 
+    <color name="color_orange">#FF9501</color>
+
     <color name="disable_foreground_gray">#42221f1f</color>
     <color name="disable_thumb_gray">#1c000000</color>
     <color name="enable_thumb_white">#fff</color>

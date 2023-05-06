@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
@@ -16,6 +17,7 @@ import com.manuni.sunway.databinding.ActivityMainBinding;
 import com.manuni.sunway.fragments.HomeFragment;
 import com.manuni.sunway.fragments.PackageFragment;
 import com.manuni.sunway.fragments.ProfileFragment;
+import com.manuni.sunway.fragments.RankFragment;
 import com.manuni.sunway.fragments.WalletFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(binding.getRoot());
 
         auth = FirebaseAuth.getInstance();
@@ -101,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 break;
             case R.id.wallet:
                 myFragment = new WalletFragment();
+                break;
+            case R.id.rank:
+                myFragment = new RankFragment();
                 break;
             case R.id.profile:
                 myFragment = new ProfileFragment();

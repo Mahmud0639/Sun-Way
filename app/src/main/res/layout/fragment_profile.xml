@@ -1,16 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile Fragment"
-        android:layout_gravity="center"
-        android:textSize="@dimen/_30font_mdp"/>
+<!--  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+      <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/appBarLayout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/white">
 
-</FrameLayout>
+          <com.google.android.material.tabs.TabLayout
+              android:id="@+id/tabLayout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="@dimen/_5mdp"
+              app:tabGravity="fill"
+              app:tabIndicator="@drawable/tab_indicator"
+              app:tabIndicatorAnimationMode="elastic"
+              app:tabIndicatorGravity="stretch"
+              app:tabMode="fixed"
+              app:tabSelectedTextColor="@color/white"
+              app:tabTextAppearance="@style/MyTabLayoutTextAppearance" />
+
+      </com.google.android.material.appbar.AppBarLayout>
+
+      <androidx.viewpager.widget.ViewPager
+          android:id="@+id/viewPager"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+
+
+
+  </LinearLayout>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/viewBg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200mdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/gradient_color_for_orange"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/myProfile"
+            android:layout_width="@dimen/_80mdp"
+            android:layout_height="@dimen/_80mdp"
+            android:src="@drawable/ic_person"
+            app:civ_border_width="@dimen/_1mdp"
+            app:civ_border_color="@color/white"
+            app:layout_constraintTop_toTopOf="@id/viewBg"
+            app:layout_constraintStart_toStartOf="@id/viewBg"
+            app:layout_constraintEnd_toEndOf="@id/viewBg"
+            android:layout_marginTop="@dimen/_30mdp"/>
+
+        <TextView
+            android:id="@+id/appsinpp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5mdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18font_mdp"
+            app:layout_constraintEnd_toEndOf="@id/myProfile"
+            app:layout_constraintStart_toStartOf="@id/myProfile"
+            app:layout_constraintTop_toBottomOf="@id/myProfile" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User"
+            app:layout_constraintTop_toBottomOf="@id/appsinpp"
+            app:layout_constraintStart_toStartOf="@id/appsinpp"
+            app:layout_constraintEnd_toEndOf="@id/appsinpp"
+            android:textColor="#EFEDED"/>
+        <TextView
+            android:id="@+id/gradientTxt"
+            android:layout_width="@dimen/_240mdp"
+            android:layout_height="@dimen/_40mdp"
+            app:layout_constraintTop_toBottomOf="@id/viewBg"
+            app:layout_constraintStart_toStartOf="@id/viewBg"
+            app:layout_constraintEnd_toEndOf="@id/viewBg"
+            app:layout_constraintBottom_toBottomOf="@id/viewBg"
+            android:text="Update profile"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/gradient_for_text"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintTop_toTopOf="@id/gradientTxt"
+            app:layout_constraintBottom_toBottomOf="@id/gradientTxt"
+           app:layout_constraintEnd_toEndOf="@id/gradientTxt"
+           android:layout_marginEnd="@dimen/_8mdp"
+            android:background="@drawable/oval_white"
+            android:padding="@dimen/_4mdp"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/accountInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20mdp"
+            android:layout_marginTop="@dimen/_30mdp"
+            android:textStyle="bold"
+            android:text="Account Info"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_20font_mdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gradientTxt" />
+        <ImageView
+            android:id="@+id/nameImg"
+            android:layout_width="@dimen/_25mdp"
+            android:layout_height="@dimen/_25mdp"
+            android:src="@drawable/ic_name"
+            app:layout_constraintTop_toBottomOf="@id/accountInfo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/_30mdp"
+            android:layout_marginTop="@dimen/_20mdp"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10mdp"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16font_mdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/nameImg"
+            app:layout_constraintStart_toEndOf="@id/nameImg"
+            app:layout_constraintTop_toTopOf="@id/nameImg"
+            />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@id/nameImg"
+            app:layout_constraintStart_toStartOf="@id/name"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            android:textStyle="bold"
+            />
+        <ImageView
+            android:id="@+id/phoneImg"
+            android:layout_width="@dimen/_25mdp"
+            android:layout_height="@dimen/_25mdp"
+            android:src="@drawable/ic_mobile"
+            app:layout_constraintTop_toBottomOf="@id/nameImg"
+            app:layout_constraintStart_toStartOf="@id/nameImg"
+            android:layout_marginTop="@dimen/_20mdp"/>
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobile"
+            app:layout_constraintTop_toTopOf="@id/phoneImg"
+            app:layout_constraintStart_toEndOf="@id/phoneImg"
+            app:layout_constraintBottom_toTopOf="@id/phoneImg"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16font_mdp"
+            android:layout_marginStart="@dimen/_10mdp"/>
+        <TextView
+            android:id="@+id/userPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:layout_constraintTop_toBottomOf="@id/phone"
+            app:layout_constraintStart_toStartOf="@id/phone"
+            android:textStyle="bold"/>
+        <ImageView
+            android:id="@+id/emailImg"
+            android:layout_width="@dimen/_25mdp"
+            android:layout_height="@dimen/_25mdp"
+            android:src="@drawable/ic_email_s"
+            app:layout_constraintTop_toBottomOf="@id/phoneImg"
+            app:layout_constraintStart_toStartOf="@id/phoneImg"
+            android:layout_marginTop="@dimen/_20mdp"/>
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            app:layout_constraintTop_toTopOf="@id/emailImg"
+            app:layout_constraintStart_toEndOf="@id/emailImg"
+            app:layout_constraintBottom_toTopOf="@id/emailImg"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16font_mdp"
+            android:layout_marginStart="@dimen/_10mdp"/>
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:layout_constraintTop_toBottomOf="@id/email"
+            app:layout_constraintStart_toStartOf="@id/email"
+            android:textStyle="bold"/>
+        <ImageView
+            android:id="@+id/homeImg"
+            android:layout_width="@dimen/_25mdp"
+            android:layout_height="@dimen/_25mdp"
+            android:src="@drawable/ic_dollar"
+            app:layout_constraintTop_toBottomOf="@id/emailImg"
+            app:layout_constraintStart_toStartOf="@id/emailImg"
+            android:layout_marginTop="@dimen/_20mdp"/>
+        <TextView
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Withdraw"
+            app:layout_constraintTop_toTopOf="@id/homeImg"
+            app:layout_constraintStart_toEndOf="@id/homeImg"
+            app:layout_constraintBottom_toTopOf="@id/homeImg"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16font_mdp"
+            android:layout_marginStart="@dimen/_10mdp"/>
+        <TextView
+            android:id="@+id/withdrawAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 610"
+            app:layout_constraintTop_toBottomOf="@id/home"
+            app:layout_constraintStart_toStartOf="@id/home"
+            android:textStyle="bold"
+          />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25mdp"
+            app:layout_constraintTop_toBottomOf="@id/withdrawAmount"
+            />
+
+       <!-- <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:progressBackgroundTint="@color/black"
+            android:progressTint="@color/black"
+            android:progress="@integer/material_motion_duration_medium_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>-->
+  <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:theme="@style/ProgressBarStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

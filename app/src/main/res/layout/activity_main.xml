@@ -21,7 +21,6 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
         android:background="@drawable/rounded_corners"
         android:elevation="3dp"
         app:itemIconSize="25dp"

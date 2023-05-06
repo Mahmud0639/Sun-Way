@@ -1,14 +1,21 @@
 package com.manuni.sunway.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,6 +24,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.sunway.R;
 import com.manuni.sunway.databinding.FragmentWalletBinding;
+import com.manuni.sunway.tabadapter.TabPagerAdapter;
+import com.manuni.sunway.tabfragments.RankingFragment;
+import com.manuni.sunway.tabfragments.WithdrawFragment;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.text.DecimalFormat;
 
@@ -66,12 +78,52 @@ public class WalletFragment extends Fragment {
                 Double balanceDouble = Double.parseDouble(balanceOf);
                 binding.currentCoins.setText(String.format("$%.2f",balanceDouble));
 
+                if (balanceDouble <= 40.0){
+                    binding.healthyAccount.setText("Unhealthy balance");
+                    binding.healthyAccount.setTextColor(Color.RED);
+                }else {
+                    binding.healthyAccount.setText("Healthy balance");
+                    binding.healthyAccount.setTextColor(Color.GREEN);
+                }
+
                // binding.currentCoins.setText("$"+String.valueOf(Double.valueOf( decimalFormat.format(balanceOf))));
                // binding.currentCoins
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+        binding.paypalEmailBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() != 34){
+                   // binding.invisibleBtn.setVisibility(View.VISIBLE);
+                    binding.sendRequest.setEnabled(false);
+                }else {
+                  //  binding.invisibleBtn.setVisibility(View.INVISIBLE);
+                    binding.sendRequest.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.sendRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "I am send btn.", Toast.LENGTH_SHORT).show();
+                binding.sendRequest.setEnabled(false);
 
             }
         });
@@ -83,4 +135,5 @@ public class WalletFragment extends Fragment {
 
         return binding.getRoot();
     }
+
 }

@@ -8,13 +8,17 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.manuni.sunway.databinding.IncomePlateBinding;
 import com.squareup.picasso.Picasso;
 
@@ -189,12 +193,25 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                             hashMap.put("timestamp", "" + timestampOf);
                             hashMap.put("uid", "" + uidOf);*/
                             // hashMap.put("taskTaken","true");
-                            hashMap.put("balance", "" + totalIncome);
+                            hashMap.put("balance",totalIncome);
                             FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     holder.binding.myProgress.setVisibility(View.GONE);
-                                    Toast.makeText(context, "Income added.", Toast.LENGTH_SHORT).show();
+
+                                    FirebaseFirestore.getInstance().collection("users")
+                                            .document(auth.getUid())
+                                            .update("balance", FieldValue.increment(incomeBalanceDouble)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Toast.makeText(context, "Income added.", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+                                    });
+
+
 
                                     // Toast.makeText(context, "" + packageLevelName, Toast.LENGTH_SHORT).show();
 
@@ -218,11 +235,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                                         String statusOfM = "" + snapshot.child(packNameOfM).getValue();
 
                                                         HashMap<String, Object> hashMap1 = new HashMap<>();
-//                                                                hashMap1.put(""+packNameOfM,""+statusOfM);
-//                                                                hashMap1.put("packId",""+packIdOfM);
-//                                                                hashMap1.put("packKey",""+packKeyOfM);
-//                                                                hashMap1.put("packName",""+packNameOfM);
-//                                                                hashMap1.put("status",""+joinStatusOfM);
+//
                                                         hashMap1.put("taskTaken", "true");
                                                         // hashMap1.put("userId",""+userIdOfM);
 

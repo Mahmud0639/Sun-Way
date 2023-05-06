@@ -92,7 +92,7 @@
             android:layout_marginTop="@dimen/_5mdp"
             android:layout_marginEnd="@dimen/_13mdp"
             android:layout_marginBottom="@dimen/_5mdp"
-            android:text="Please use TRC-20 method to get your payment"
+            android:text="Please use TRC-20 network to get your payment"
             android:gravity="center"
             android:textColor="#E82424"
             android:textSize="@dimen/_11font_mdp"
@@ -134,15 +134,37 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14mdp"
-            android:background="@drawable/send_req_btn_twenty"
+            android:background="@drawable/btn_click_effect"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/send_request"
             android:textColor="@color/white"
             android:textAllCaps="false"
+            android:enabled="false"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/_5mdp"
             app:layout_constraintEnd_toEndOf="@+id/paypalEmailBox"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/paypalEmailBox"
             app:layout_constraintTop_toBottomOf="@+id/paypalEmailBox" />
+<!--  <Button
+            android:id="@+id/invisibleBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14mdp"
+            android:background="@drawable/send_req_btn_twenty"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/send_request"
+            android:backgroundTint="#9AFFFFFF"
+            android:textColor="#ECE8E8"
+            android:textAllCaps="false"
+            android:enabled="false"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/paypalEmailBox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/paypalEmailBox"
+            app:layout_constraintTop_toBottomOf="@+id/paypalEmailBox" />-->
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="@dimen/_70mdp"
@@ -155,6 +177,14 @@
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:layout_constraintVertical_bias="0.31" />
+
+
+
+
+
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

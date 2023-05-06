@@ -45,7 +45,6 @@
           android:id="@+id/carouselCardView"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_margin="@dimen/_4mdp"
           app:cardCornerRadius="@dimen/_10mdp">
         <org.imaginativeworld.whynotimagecarousel.ImageCarousel
             android:id="@+id/carousel"
@@ -63,7 +62,7 @@
           android:layout_width="match_parent"
           android:layout_height="@dimen/_70mdp"
           android:layout_below="@id/carouselCardView"
-          android:layout_margin="@dimen/_4mdp"
+          android:layout_margin="@dimen/_2mdp"
           app:cardCornerRadius="@dimen/_5mdp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
