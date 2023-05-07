@@ -6,14 +6,20 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:hardwareAccelerated="false"
         android:largeHeap="true"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SunWay">
+        android:theme="@style/Theme.SunWay"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".UpdateProfileActivity"
+            android:theme="@style/Theme.SunWay.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:windowSoftInputMode="stateHidden"
+            android:exported="false" />
         <activity
             android:name=".PayToJoinActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
@@ -24,28 +30,28 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:exported="false" />
         <activity
             android:name=".UserInfoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:exported="true"
             android:label="User Info"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:theme="@style/Theme.SunWay.NoActionBar.Material"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".GetOTPActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:exported="false" />
         <activity
             android:name=".SignupActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:exported="false"
-            android:label="Send OTP"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+            android:label="Send OTP" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:exported="true"
             android:theme="@style/Theme.SunWay.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,8 +61,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:exported="true"
             android:theme="@style/Theme.SunWay.NoActionBar.Material" />
     </application>
 

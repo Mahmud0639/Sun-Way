@@ -6,63 +6,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ProfileFragment">
 
-<!--  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
-      <com.google.android.material.appbar.AppBarLayout
-          android:id="@+id/appBarLayout"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@color/white">
 
-          <com.google.android.material.tabs.TabLayout
-              android:id="@+id/tabLayout"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="@dimen/_5mdp"
-              app:tabGravity="fill"
-              app:tabIndicator="@drawable/tab_indicator"
-              app:tabIndicatorAnimationMode="elastic"
-              app:tabIndicatorGravity="stretch"
-              app:tabMode="fixed"
-              app:tabSelectedTextColor="@color/white"
-              app:tabTextAppearance="@style/MyTabLayoutTextAppearance" />
-
-      </com.google.android.material.appbar.AppBarLayout>
-
-      <androidx.viewpager.widget.ViewPager
-          android:id="@+id/viewPager"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"/>
-
-
-
-  </LinearLayout>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40mdp"
+            android:background="@drawable/gradient_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User profile"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/white"/>
+
+        </RelativeLayout>
 
         <View
             android:id="@+id/viewBg"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_200mdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintTop_toBottomOf="@id/toolBar"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/gradient_color_for_orange"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieRadar"
+            android:layout_width="@dimen/_130mdp"
+            android:layout_height="@dimen/_130mdp"
+            app:lottie_rawRes="@raw/radar_white"
+            app:lottie_autoPlay="true"
+            app:layout_constraintTop_toTopOf="@id/viewBg"
+            app:layout_constraintStart_toStartOf="@id/viewBg"
+            app:layout_constraintEnd_toEndOf="@id/viewBg"
+            android:layout_marginTop="@dimen/_30mdp"
+            app:lottie_loop="true"/>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/myProfile"
             android:layout_width="@dimen/_80mdp"
             android:layout_height="@dimen/_80mdp"
-            android:src="@drawable/ic_person"
+            android:src="@drawable/impl6"
             app:civ_border_width="@dimen/_1mdp"
             app:civ_border_color="@color/white"
-            app:layout_constraintTop_toTopOf="@id/viewBg"
-            app:layout_constraintStart_toStartOf="@id/viewBg"
-            app:layout_constraintEnd_toEndOf="@id/viewBg"
-            android:layout_marginTop="@dimen/_30mdp"/>
+            app:layout_constraintTop_toTopOf="@id/lottieRadar"
+            app:layout_constraintStart_toStartOf="@id/lottieRadar"
+            app:layout_constraintEnd_toEndOf="@id/lottieRadar"
+            app:layout_constraintBottom_toBottomOf="@id/lottieRadar"
+           />
 
         <TextView
             android:id="@+id/appsinpp"
@@ -234,7 +233,7 @@
             android:id="@+id/withdrawAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$ 610"
+            android:text="$610"
             app:layout_constraintTop_toBottomOf="@id/home"
             app:layout_constraintStart_toStartOf="@id/home"
             android:textStyle="bold"
@@ -264,7 +263,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:theme="@style/ProgressBarStyle"
-            app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/toolBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

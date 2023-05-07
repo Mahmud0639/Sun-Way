@@ -69,8 +69,6 @@ public class HomeFragment extends Fragment {
 
 
 
-
-
         return binding.getRoot();
     }
 
@@ -100,7 +98,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadTaskPack() {
-        binding.progressBar.setVisibility(View.VISIBLE);
+       // binding.progressBar.setVisibility(View.VISIBLE);
         list = new ArrayList<>();
         DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("PackageInfo");
         taskRef.addValueEventListener(new ValueEventListener() {
@@ -121,7 +119,10 @@ public class HomeFragment extends Fragment {
                     binding.workPackRV.setAdapter(taskAdapter);
                     taskAdapter.notifyDataSetChanged();
                     binding.workPackRV.setHasFixedSize(true);
-                    binding.progressBar.setVisibility(View.GONE);
+                   // binding.progressBar.setVisibility(View.GONE);
+
+                    binding.shimmerViewContainer.stopShimmer();
+                    binding.shimmerViewLayout.setVisibility(View.GONE);
                 }
 
             }
@@ -132,5 +133,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        binding.shimmerViewContainer.stopShimmer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.shimmerViewContainer.startShimmer();
     }
 }

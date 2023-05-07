@@ -49,6 +49,9 @@
     <style name="ProgressBarStyle">
         <item name="colorAccent">@color/color_orange</item>
     </style>
+    <style name="progressBarStyle2">
+        <item name="colorAccent">#807878</item>
+    </style>
 
     Theme.MaterialComponents.DayNight.DarkActionBar
 </resources>

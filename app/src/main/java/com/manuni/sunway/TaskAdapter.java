@@ -85,7 +85,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.binding.taskImage.setImageResource(R.drawable.impl1);
         }
 
-        holder.binding.levelName.setText(data.getLevelName());
+        holder.binding.levelName.setText("VIP: "+data.getLevelName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,6 +1,7 @@
 package com.manuni.sunway.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.manuni.sunway.R;
+import com.manuni.sunway.UpdateProfileActivity;
 import com.manuni.sunway.databinding.FragmentProfileBinding;
 import com.manuni.sunway.tabadapter.TabPagerAdapter;
 import com.manuni.sunway.tabfragments.RankingFragment;
@@ -55,6 +58,7 @@ private Context mContext;
     }
     FragmentProfileBinding binding;
     private FirebaseAuth auth;
+    private String fullNameUser,phoneNumberUser,emailUser,profileUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,10 +97,10 @@ private Context mContext;
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 binding.progressBar.setVisibility(View.VISIBLE);
                 if (documentSnapshot.exists()){
-                    String fullNameUser = documentSnapshot.getString("fullName");
-                    String phoneNumberUser = documentSnapshot.getString("phoneNumber");
-                    String emailUser = documentSnapshot.getString("email");
-                    String profileUser = documentSnapshot.getString("profileImage");
+                     fullNameUser = documentSnapshot.getString("fullName");
+                     phoneNumberUser = documentSnapshot.getString("phoneNumber");
+                     emailUser = documentSnapshot.getString("email");
+                     profileUser = documentSnapshot.getString("profileImage");
 
                     binding.appsinpp.setText(fullNameUser);
                     binding.userName.setText(fullNameUser);
@@ -104,9 +108,9 @@ private Context mContext;
                     binding.userEmail.setText(emailUser);
 
                     try {
-                        Picasso.get().load(profileUser).placeholder(R.drawable.ic_person).into(binding.myProfile);
+                        Picasso.get().load(profileUser).placeholder(R.drawable.impl6).into(binding.myProfile);
                     } catch (Exception e) {
-                        binding.myProfile.setImageResource(R.drawable.ic_person);
+                        binding.myProfile.setImageResource(R.drawable.impl6);
                     }
                     binding.progressBar.setVisibility(View.GONE);
                 }
@@ -117,7 +121,25 @@ private Context mContext;
         });
 
 
+            binding.gradientTxt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int visibility = binding.progressBar.getVisibility();
 
+                    if (visibility==0){
+                        Toast.makeText(mContext, "Please Wait...", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Intent intent = new Intent(getContext(), UpdateProfileActivity.class);
+                        intent.putExtra("userName",""+fullNameUser);
+                        intent.putExtra("userPhone",""+phoneNumberUser);
+                        intent.putExtra("userProfile",""+profileUser);
+                        intent.putExtra("userEmail",""+emailUser);
+                        startActivity(intent);
+                    }
+
+
+                }
+            });
 
 
         return binding.getRoot();

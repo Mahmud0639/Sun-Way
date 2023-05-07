@@ -7,13 +7,14 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#FFEB3B"
+        app:cardBackgroundColor="#72FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:contentPadding="@dimen/_5mdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:cardElevation="@dimen/_3mdp"
+        app:cardCornerRadius="@dimen/_5mdp"
         app:cardUseCompatPadding="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

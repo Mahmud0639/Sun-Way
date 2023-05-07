@@ -63,7 +63,7 @@ private Context mContext;
 
         binding = FragmentPackageBinding.inflate(inflater,container,false);
 
-        binding.progressBar.setVisibility(View.VISIBLE);
+      //  binding.progressBar.setVisibility(View.VISIBLE);
         list = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference().child("PackageInfo");
@@ -88,7 +88,10 @@ private Context mContext;
                     binding.totalVip.setText("Total VIP: "+snapshot.getChildrenCount());
 
                     adapter.notifyDataSetChanged();
-                    binding.progressBar.setVisibility(View.GONE);
+                   // binding.progressBar.setVisibility(View.GONE);
+
+                    binding.shimmerViewContainer.stopShimmer();
+                    binding.shimmerViewLayout.setVisibility(View.GONE);
                 }
 
 
@@ -97,12 +100,24 @@ private Context mContext;
             @Override
             public void onCancelled(DatabaseError error) {
 
-                binding.progressBar.setVisibility(View.GONE);
+                //binding.progressBar.setVisibility(View.GONE);
 
             }
         });
 
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        binding.shimmerViewContainer.stopShimmer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.shimmerViewContainer.startShimmer();
     }
 }
