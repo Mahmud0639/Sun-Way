@@ -5,7 +5,9 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +25,7 @@ import com.manuni.sunway.fragments.WalletFragment;
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
     ActivityMainBinding binding;
     private FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,6 +11,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/_3mdp"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.cardview.widget.CardView
             android:id="@+id/card"

@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.manuni.sunway.R;
+import com.manuni.sunway.SettingsActivity;
 import com.manuni.sunway.UpdateProfileActivity;
 import com.manuni.sunway.databinding.FragmentProfileBinding;
 import com.manuni.sunway.tabadapter.TabPagerAdapter;
@@ -138,6 +139,13 @@ private Context mContext;
                     }
 
 
+                }
+            });
+
+            binding.settings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(mContext, SettingsActivity.class));
                 }
             });
 

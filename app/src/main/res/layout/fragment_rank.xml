@@ -30,6 +30,7 @@
                 app:tabIndicatorColor="@color/black"
                 android:background="#00000000"
                 app:tabIndicatorFullWidth="true"
+                app:tabMinWidth="@dimen/_30mdp"
                 app:tabSelectedTextColor="@color/white"
                 app:tabTextAppearance="@style/MyTabLayoutTextAppearance" />
 

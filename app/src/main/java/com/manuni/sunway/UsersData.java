@@ -1,13 +1,13 @@
 package com.manuni.sunway;
 
 public class UsersData {
-    private String fullName,phoneNumber,email,uid,online,referCode,totalCount,adminMessage,timestamp,profileImage;
+    private String fullName,phoneNumber,email,uid,online,referCode,totalCount,adminMessage,timestamp,profileImage,userReferCode;
    private double balance=5.00;
 
     public UsersData() {
     }
 
-    public UsersData(String fullName, String phoneNumber, String email, String uid, String online, String referCode, String totalCount, String adminMessage, String timestamp, String profileImage) {
+    public UsersData(String fullName, String phoneNumber, String email, String uid, String online, String referCode, String totalCount, String adminMessage, String timestamp, String profileImage,String userReferCode) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -18,6 +18,15 @@ public class UsersData {
         this.adminMessage = adminMessage;
         this.timestamp = timestamp;
         this.profileImage = profileImage;
+        this.userReferCode = userReferCode;
+    }
+
+    public String getUserReferCode() {
+        return userReferCode;
+    }
+
+    public void setUserReferCode(String userReferCode) {
+        this.userReferCode = userReferCode;
     }
 
     public String getFullName() {

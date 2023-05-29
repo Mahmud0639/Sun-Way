@@ -1,8 +1,11 @@
 package com.manuni.sunway;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.BlurMaskFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -12,23 +15,36 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.model.content.BlurEffect;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.manuni.sunway.databinding.ActivityUserInfoBinding;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 public class UserInfoActivity extends AppCompatActivity {
     ActivityUserInfoBinding binding;
@@ -39,72 +55,66 @@ public class UserInfoActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private FirebaseFirestore firestore;
 
+    private ProgressDialog progressDialog;
+
+    private String userEmailGoogle,userNameEmailFull,userPhoneGoogle;
+
+    SharedPreferences myPrefs;
+
+    private String my_email,my_name;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         binding = ActivityUserInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+
+
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        userEmailGoogle = getIntent().getStringExtra("googleEmail");
+        userNameEmailFull = getIntent().getStringExtra("userNameEmail");
+        userPhoneGoogle = getIntent().getStringExtra("userPhoneGoogle");
+
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        binding.nameET.addTextChangedListener(new TextWatcher() {
+        progressDialog = new ProgressDialog(UserInfoActivity.this);
+        progressDialog.setMessage("Creating account...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+
+
+
+
+        binding.referSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() <= 3) {
-                    binding.textInputName.setError("Name is too small.");
-
-                } else if (charSequence.length() >= 20) {
-                    binding.textInputName.setError("Name is too long. Put under 20 char.");
-
-                } else {
-                    binding.textInputName.setError(null);
-                    binding.textInputName.setHelperText("Valid Name.");
-                    binding.textInputName.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
-
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked){
+                    try {
+                        binding.textInputReferCode.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    try {
+                        binding.textInputReferCode.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
 
-        binding.emailEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!Patterns.EMAIL_ADDRESS.matcher(charSequence).matches()) {
-                    binding.textInputEmail.setError("Invalid Email Pattern.");
-
-                } else {
-                    binding.textInputEmail.setError(null);
-                    binding.textInputEmail.setErrorEnabled(false);
-                    binding.textInputEmail.setHelperText("Valid email address.");
-                    binding.textInputEmail.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
         binding.personImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,9 +136,6 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void inputDataToDatabaseAndStorage() {
 
-        if (!validateFullName() | !validateEmail()){
-            return;
-        }
 
         ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -162,105 +169,178 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void saveToDatabase() {
 
-        binding.loadingLottie.setVisibility(View.VISIBLE);
 
-        String phoneNumber = Objects.requireNonNull(auth.getCurrentUser()).getPhoneNumber();
+        myPrefs = getSharedPreferences(SignUpActivityForGoogle.SAVE_USER_INFO,Context.MODE_PRIVATE);
+        my_email = myPrefs.getString("emailUser",my_email);
+        my_name = myPrefs.getString("nameUser",my_name);
 
-        if (imageUri == null) {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("fullName", "" + binding.nameET.getText().toString().trim());
-            hashMap.put("phoneNumber", "" + phoneNumber);
-            hashMap.put("email",""+binding.emailEt.getText().toString().trim());
-            hashMap.put("uid", "" + auth.getUid());
-            hashMap.put("online", "true");
-            hashMap.put("balance","5.00");
-            hashMap.put("referCode","");
-            hashMap.put("totalCount","0");
-            hashMap.put("adminMessage","Hi,Thanks for using our App.");
-            hashMap.put("timestamp", "" + System.currentTimeMillis());
-            hashMap.put("profileImage", "");
+
+       // binding.loadingLottie.setVisibility(View.VISIBLE);
+
+        String phoneNumber = binding.textInputPhone.getEditText().getText().toString().trim();
+        String userRefer = binding.textInputReferCode.getEditText().getText().toString().trim();
 
 
 
-            reference.child(Objects.requireNonNull(auth.getUid())).setValue(hashMap).addOnSuccessListener(unused -> {
-                //dialogForAccount.dismiss();
-                try {
-                    binding.loadingLottie.setVisibility(View.GONE);
+        String ALLOWED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-                    UsersData usersData = new UsersData(binding.nameET.getText().toString().trim(),phoneNumber,binding.emailEt.getText().toString().trim(),auth.getUid(),
-                            "true","","0","Hi,Thanks for using our App.",""+System.currentTimeMillis(),"");
+            StringBuilder codeBuilder = new StringBuilder(6);
+            Random random = new Random();
 
-                    firestore.collection("users")
-                            .document(auth.getUid())
-                            .set(usersData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(Task<Void> task) {
-                            if (task.isSuccessful()){
-                                startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
-                                finish();
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    binding.loadingLottie.setVisibility(View.GONE);
-                    e.printStackTrace();
-                }
+            for (int i = 0; i < 6; i++) {
+                int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
+                char randomChar = ALLOWED_CHARACTERS.charAt(randomIndex);
+                codeBuilder.append(randomChar);
+            }
 
-            });
-
-        }else {
-       String filePathAndName = "profile_images/"+""+auth.getUid();
-            storageReference.child(filePathAndName).putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+            String referCode = codeBuilder.toString();
 
 
-                while (!uriTask.isSuccessful());
-                Uri downloadUrl = uriTask.getResult();
+        if (TextUtils.isEmpty(phoneNumber)){
+            binding.textInputPhone.setError("Field can't be empty");
+        } else{
+          //  progressDialog.show();
+            binding.cons.setVisibility(View.INVISIBLE);
+            binding.rel.setVisibility(View.INVISIBLE);
+            binding.textInputPhone.setVisibility(View.INVISIBLE);
+            binding.registerBtnUser.setEnabled(false);
 
-                if (uriTask.isSuccessful()){
-                    HashMap<String,Object> hashMap = new HashMap<>();
-                    hashMap.put("fullName",""+binding.nameET.getText().toString().trim());
-                    hashMap.put("phoneNumber",""+phoneNumber);
-                    hashMap.put("email",""+binding.emailEt.getText().toString().trim());
-                    hashMap.put("uid",""+auth.getUid());
-                    hashMap.put("online","true");
-                    hashMap.put("balance","5.00");
-                    hashMap.put("totalCount","0");
-                    hashMap.put("referCode","");
-                   // hashMap.put("taskTaken","false");
-                    hashMap.put("adminMessage","Hi,Thanks for using our App.");
-                    hashMap.put("timestamp",""+System.currentTimeMillis());
-                    hashMap.put("profileImage",""+downloadUrl);
+            binding.loadLottie.setVisibility(View.VISIBLE);
 
-                    reference.child(Objects.requireNonNull(auth.getUid())).setValue(hashMap).addOnSuccessListener(unused -> {
-                       // dialogForAccount.dismiss();
-                        try {
-                            binding.loadingLottie.setVisibility(View.GONE);
+            binding.phoneNumberET.setError(null);
+            if (imageUri == null) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("fullName", "" +my_name);
+                hashMap.put("phoneNumber", "" + phoneNumber);
+                hashMap.put("email",""+my_email);
+                hashMap.put("uid", "" + auth.getUid());
+                hashMap.put("online", "true");
+                hashMap.put("usedReferCode",userRefer);
+                hashMap.put("balance","5.00");
+                hashMap.put("referCode",""+referCode);
+                hashMap.put("totalCount","0");
+                hashMap.put("adminMessage","Hi,Thanks for using our App.");
+                hashMap.put("timestamp", "" + System.currentTimeMillis());
+                hashMap.put("profileImage", "");
 
-                            UsersData usersData = new UsersData(binding.nameET.getText().toString().trim(),phoneNumber,binding.emailEt.getText().toString().trim(),auth.getUid(),
-                                    "true","","0","Hi,Thanks for using our App.",""+System.currentTimeMillis(),""+downloadUrl);
-                            firestore.collection("users")
-                                    .document(auth.getUid())
-                                    .set(usersData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
-                                        finish();
-                                    }
+
+
+                reference.child(Objects.requireNonNull(auth.getUid())).setValue(hashMap).addOnSuccessListener(unused -> {
+                    //dialogForAccount.dismiss();
+                    try {
+                     //   binding.loadingLottie.setVisibility(View.GONE);
+
+                        UsersData usersData = new UsersData(my_name,phoneNumber,my_email,auth.getUid(),
+                                "true",""+referCode,"0","Hi,Thanks for using our App.",""+System.currentTimeMillis(),"",userRefer);
+
+                        firestore.collection("users")
+                                .document(auth.getUid())
+                                .set(usersData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(Task<Void> task) {
+                                if (task.isSuccessful()){
+                                  // progressDialog.dismiss();
+                                    incrementBalance(userRefer);
+                                    startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
+                                    finish();
                                 }
-                            });
+                            }
+                        });
+                    } catch (Exception e) {
 
-                        } catch (Exception e) {
-                            binding.loadingLottie.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
+                        binding.cons.setVisibility(View.VISIBLE);
+                        binding.rel.setVisibility(View.VISIBLE);
+                        binding.textInputPhone.setVisibility(View.VISIBLE);
+                        binding.registerBtnUser.setEnabled(false);
 
-                    });
-                }
+                        binding.loadLottie.setVisibility(View.GONE);
 
-            });
+                      //  progressDialog.dismiss();
+                     //   binding.loadingLottie.setVisibility(View.GONE);
+                        e.printStackTrace();
+                    }
+
+                });
+
+            }else {
+                //progressDialog.show();
+                binding.cons.setVisibility(View.INVISIBLE);
+                binding.rel.setVisibility(View.INVISIBLE);
+                binding.textInputPhone.setVisibility(View.INVISIBLE);
+                binding.registerBtnUser.setEnabled(false);
+
+                binding.loadLottie.setVisibility(View.VISIBLE);
+
+
+
+                String filePathAndName = "profile_images/"+""+auth.getUid();
+                storageReference.child(filePathAndName).putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+
+
+                    while (!uriTask.isSuccessful());
+                    Uri downloadUrl = uriTask.getResult();
+
+                    if (uriTask.isSuccessful()){
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("fullName",""+my_name);
+                        hashMap.put("phoneNumber",""+phoneNumber);
+                        hashMap.put("email",""+my_email);
+                        hashMap.put("uid",""+auth.getUid());
+                        hashMap.put("online","true");
+                        hashMap.put("balance","5.00");
+                        hashMap.put("totalCount","0");
+                        hashMap.put("usedReferCode",userRefer);
+                        hashMap.put("referCode",""+referCode);
+                        // hashMap.put("taskTaken","false");
+                        hashMap.put("adminMessage","Hi,Thanks for using our App.");
+                        hashMap.put("timestamp",""+System.currentTimeMillis());
+                        hashMap.put("profileImage",""+downloadUrl);
+
+                        reference.child(Objects.requireNonNull(auth.getUid())).setValue(hashMap).addOnSuccessListener(unused -> {
+                            // dialogForAccount.dismiss();
+                            try {
+                              //  binding.loadingLottie.setVisibility(View.GONE);
+
+                                UsersData usersData = new UsersData(my_name,phoneNumber,my_email,auth.getUid(),
+                                        "true",""+referCode,"0","Hi,Thanks for using our App.",""+System.currentTimeMillis(),""+downloadUrl,userRefer);
+                                firestore.collection("users")
+                                        .document(auth.getUid())
+                                        .set(usersData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(Task<Void> task) {
+                                        if (task.isSuccessful()){
+
+                                            incrementBalance(userRefer);
+                                          //  progressDialog.dismiss();
+                                            startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
+                                            finish();
+                                        }
+                                    }
+                                });
+
+                            } catch (Exception e) {
+
+                                binding.rel.setVisibility(View.VISIBLE);
+                                binding.cons.setVisibility(View.VISIBLE);
+                                binding.textInputPhone.setVisibility(View.VISIBLE);
+                                binding.registerBtnUser.setEnabled(false);
+
+                                binding.loadLottie.setVisibility(View.GONE);
+
+                              //  binding.loadingLottie.setVisibility(View.GONE);
+                              //  progressDialog.dismiss();
+                                e.printStackTrace();
+                            }
+
+                        });
+                    }
+
+                });
+            }
         }
+
+
 
     }
 
@@ -290,45 +370,91 @@ public class UserInfoActivity extends AppCompatActivity {
 
     }
 
-    private boolean validateFullName() {
-        fullName = binding.nameET.getText().toString().trim();
+    boolean shouldStopLoop = false;
 
-        if (fullName.length() <= 3) {
-            binding.textInputName.setError("Name field can't be empty or too small.");
-            return false;
+    private void incrementBalance(String usRefer){
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot snapshot: queryDocumentSnapshots){
+                    String referCode = snapshot.getString("referCode");
+                   // String uid = snapshot.getString("uid");
 
-        }else if (fullName.length() >= 20) {
-            binding.textInputName.setError("Name is too long. Put under 20 char.");
-            return false;
 
-        } else {
-            binding.textInputName.setError(null);
-            binding.textInputName.setHelperText("Valid Name.");
-            binding.textInputName.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
-            return true;
+                    if (referCode.equals(usRefer)){
 
-        }
+                        firebaseFirestore.collection("users").whereEqualTo("referCode",referCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                                    String uid = documentSnapshot.getString("uid");
+
+                                    firebaseFirestore.collection("users").document(uid).update("balance", FieldValue.increment(Double.parseDouble("3"))).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+
+                                            updateRealtimeDatabase(uid);
+
+                                            Toast.makeText(UserInfoActivity.this, "Field value incremented.", Toast.LENGTH_SHORT).show();
+
+                                            shouldStopLoop = true;
+                                        }
+                                    });
+
+                                }
+                            }
+                        });
+
+
+                    }
+
+                    if (shouldStopLoop){
+                        break;
+                    }
+
+                }
+
+            }
+        });
+
     }
 
-    private boolean validateEmail() {
+    private void updateRealtimeDatabase(String userId) {
+
+        double giveDollar = 3.00;
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                String balance = ""+snapshot.child("balance").getValue();
+
+                double totalBalance = giveDollar + Double.parseDouble(balance);
 
 
-        email = binding.emailEt.getText().toString().trim();
+                HashMap<String,Object> hashMap = new HashMap<>();
+                hashMap.put("balance",totalBalance);
+                reference.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(UserInfoActivity.this, "Dollar added.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        if (email.isEmpty()) {
-            binding.textInputEmail.setError("Field can't be empty");
-            return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.textInputEmail.setError("Invalid Email Pattern");
-            return false;
-        } else {
-            binding.textInputEmail.setError(null);
-            binding.textInputEmail.setErrorEnabled(false);
-            binding.textInputEmail.setHelperText("Valid email address.");
-            binding.textInputEmail.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorGreen)));
-            return true;
-        }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+
 
 
     }
+
 }

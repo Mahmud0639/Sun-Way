@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_blur"
+    tools:context=".ReferCodeActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/action_bar_three_d">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Refer Code"
+            android:textSize="@dimen/_14font_mdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_centerInParent="true"/>
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="@dimen/_30mdp"
+            android:layout_height="@dimen/_30mdp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_left_arrow"
+            android:background="@android:color/transparent"/>
+
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_200mdp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/_10mdp"
+        app:cardCornerRadius="@dimen/_5mdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_10mdp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/referTXT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share your referral code to earn 3$ more"
+                android:textSize="@dimen/_14font_mdp"
+                android:fontFamily="@font/roboto_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_20mdp"/>
+            <EditText
+                android:id="@+id/referCodeET"
+                android:layout_width="@dimen/_200mdp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/_10mdp"
+                android:drawableTint="#BAB5B5"
+                android:textColor="#575555"
+                android:drawableStart="@drawable/ic_refer"
+                android:background="@drawable/edit_text_three_d"
+                app:layout_constraintTop_toBottomOf="@id/referTXT"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_20mdp"
+                android:hint="refer code"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/referCopyBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Copy"
+            android:textAllCaps="false"
+            android:background="@drawable/click_effect_refer_btn"
+            app:layout_constraintTop_toBottomOf="@id/referCodeET"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_20mdp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

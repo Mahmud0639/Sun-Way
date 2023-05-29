@@ -1,11 +1,14 @@
 package com.manuni.sunway.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.sunway.PackageModel;
 import com.manuni.sunway.R;
+import com.manuni.sunway.ReferCodeActivity;
+import com.manuni.sunway.SignUpActivityForGoogle;
 import com.manuni.sunway.TaskAdapter;
 import com.manuni.sunway.TaskModel;
 import com.manuni.sunway.databinding.FragmentHomeBinding;
@@ -65,6 +70,35 @@ public class HomeFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         loadTaskPack();
         carouselData();
+
+        PopupMenu popupMenu = new PopupMenu(getContext(),binding.moreBtn);
+        popupMenu.getMenu().add("Refer Code");
+        popupMenu.getMenu().add("Logout");
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                if (item.getTitle()=="Logout"){
+                    auth.signOut();
+                    startActivity(new Intent(getContext(), SignUpActivityForGoogle.class));
+                    getActivity().finish();
+                }else if (item.getTitle()=="Refer Code"){
+                    startActivity(new Intent(getContext(), ReferCodeActivity.class));
+                }
+
+                return true;
+            }
+        });
+
+
+
+        binding.moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupMenu.show();
+            }
+        });
 
 
 

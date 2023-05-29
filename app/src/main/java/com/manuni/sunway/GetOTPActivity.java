@@ -41,7 +41,12 @@ public class GetOTPActivity extends AppCompatActivity {
         timer = new CountDownTimer(60000,1000) {
             @Override
             public void onTick(long l) {
-                binding.countTimer.setText(String.valueOf(l / 1000));
+                if (l/1000<10){
+                    binding.countTimer.setText("00:0"+l/1000);
+                }else {
+                    binding.countTimer.setText(String.valueOf("00:"+l / 1000));
+                }
+
 
             }
 
@@ -59,7 +64,7 @@ public class GetOTPActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         phoneNumber = getIntent().getStringExtra("mobile");
-        initOTP();
+      initOTP();
 
         binding.verifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -15,11 +16,24 @@
         android:theme="@style/Theme.SunWay"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".UpdateProfileActivity"
-            android:theme="@style/Theme.SunWay.NoActionBar"
+            android:name=".ReferCodeActivity"
+            android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:windowSoftInputMode="stateHidden"
-            android:exported="false" />
+            android:theme="@style/Theme.SunWay.NoActionBar"/>
+        <activity
+            android:name=".SignUpActivityForGoogle"
+            android:exported="false"
+            android:theme="@style/Theme.SunWay.NoActionBar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.Light" />
+        <activity
+            android:name=".UpdateProfileActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:exported="false"
+            android:theme="@style/Theme.SunWay.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".PayToJoinActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
@@ -38,11 +52,13 @@
             android:exported="true"
             android:label="User Info"
             android:theme="@style/Theme.SunWay.NoActionBar.Material"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity
             android:name=".GetOTPActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SignupActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"

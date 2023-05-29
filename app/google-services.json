@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "643055294703",
+    "firebase_url": "https://sun-way-87e8c-default-rtdb.firebaseio.com",
     "project_id": "sun-way-87e8c",
     "storage_bucket": "sun-way-87e8c.appspot.com"
   },
@@ -10,6 +11,43 @@
         "mobilesdk_app_id": "1:643055294703:android:e52083739650a30f04e31a",
         "android_client_info": {
           "package_name": "com.manuni.sunway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643055294703-crcev3suobjhpg8ob41q7ep48vask5o5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manuni.sunway",
+            "certificate_hash": "32072936bd55c7369aa1accd55eabf2b299fa706"
+          }
+        },
+        {
+          "client_id": "643055294703-s1u0m94ko9dd3dv94ukp2hj38ck2r9fk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWjEu15vi_TwYwCSTfn77qHAGu-mn0vY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643055294703-s1u0m94ko9dd3dv94ukp2hj38ck2r9fk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643055294703:android:2db9bad454b6719704e31a",
+        "android_client_info": {
+          "package_name": "com.manuni.sunwayadmin"
         }
       },
       "oauth_client": [

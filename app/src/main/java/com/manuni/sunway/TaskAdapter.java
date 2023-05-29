@@ -98,6 +98,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 }else if (!holder.binding.viewBack.isEnabled()){
                     holder.binding.levelName.setText("(Pending...)");
                     return;
+                }else {
+                    Intent intent = new Intent();
+                    context.startActivity(intent);
                 }
 
 

@@ -4,22 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4F1F1"
     tools:context=".UserInfoActivity">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:id="@+id/mainLayout"
+        >
 
 
         <RelativeLayout
             android:id="@+id/rel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80mdp"
-            android:background="@drawable/toolbar"
+            android:background="#BF816D"
             android:padding="@dimen/_10mdp">
-
 
 
             <TextView
@@ -33,10 +34,7 @@
                 android:textStyle="bold" />
 
 
-
-
         </RelativeLayout>
-
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rel"
-            android:layout_marginTop="@dimen/_30mdp">
+            android:layout_marginTop="@dimen/_30mdp"
+            android:visibility="visible">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -73,78 +72,91 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+
+        <Switch
+            android:id="@+id/referSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textInputName"
-            android:layout_marginTop="@dimen/_12mdp"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true"
+            android:layout_below="@id/textInputPhone"
+            android:layout_marginTop="@dimen/_10mdp"
+            android:paddingHorizontal="@dimen/_10mdp"
+            android:text="Give a refer code"
+            android:textColor="#504F4F"
+            android:theme="@style/mySwitchBack"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputPhone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/cons"
-            app:hintEnabled="false"
+            android:layout_marginTop="@dimen/_12mdp"
             app:boxBackgroundMode="outline"
-            app:helperTextTextColor="#919090"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:helperText="Your name">
-
-            <EditText
-                android:id="@+id/nameET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5mdp"
-                android:layout_marginEnd="@dimen/_5mdp"
-                android:layout_marginBottom="@dimen/_5mdp"
-                android:textColor="@color/black"
-                android:textColorHint="#919090"
-                android:background="@drawable/shape_rect_02"
-                android:drawableStart="@drawable/ic_phone_gray"
-                android:drawablePadding="@dimen/_5mdp"
-                android:hint="Your name"
-                android:inputType="textPersonName"
-                android:padding="@dimen/_10mdp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textInputName"
-            android:layout_marginTop="@dimen/_5mdp"
             app:endIconMode="clear_text"
             app:errorEnabled="true"
-            app:boxBackgroundMode="outline"
-            app:helperText="example@gmail.com"
+            app:helperText="Your contact"
             app:helperTextTextColor="#919090"
             app:hintEnabled="false">
 
             <EditText
-                android:id="@+id/emailEt"
+                android:id="@+id/phoneNumberET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5mdp"
                 android:layout_marginEnd="@dimen/_5mdp"
                 android:layout_marginBottom="@dimen/_5mdp"
                 android:background="@drawable/shape_rect_02"
-                android:drawableStart="@drawable/ic_mail_gray"
+                android:drawableStart="@drawable/ic_phone_gray"
                 android:drawablePadding="@dimen/_5mdp"
-                android:hint="Enter Your Email"
-                android:inputType="textEmailAddress"
+                android:hint="Enter Phone Number"
+                android:inputType="phone"
                 android:padding="@dimen/_10mdp"
                 android:textColor="@color/black"
-                android:textColorHint="#919090"
-               />
+                android:textColorHint="#919090" />
 
+        </com.google.android.material.textfield.TextInputLayout>
+
+ <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputReferCode"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/referSwitch"
+            android:layout_marginTop="@dimen/_12mdp"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            android:visibility="gone"
+            app:errorEnabled="true"
+            app:helperText="Refer code"
+            app:helperTextTextColor="#919090"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/referET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:layout_marginEnd="@dimen/_5mdp"
+                android:layout_marginBottom="@dimen/_5mdp"
+                android:background="@drawable/shape_rect_02"
+                android:drawableStart="@drawable/ic_phone_gray"
+                android:drawablePadding="@dimen/_5mdp"
+                android:hint="Enter refer code"
+                android:inputType="text"
+                android:padding="@dimen/_10mdp"
+                android:textColor="@color/black"
+                android:textColorHint="#919090" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/registerBtnUser"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textInputEmail"
+            android:layout_below="@id/textInputReferCode"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20mdp"
             android:layout_marginBottom="@dimen/_10mdp"
@@ -156,22 +168,17 @@
 
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/loadingLottie"
+            android:id="@+id/loadLottie"
             android:layout_width="@dimen/_130mdp"
             android:layout_height="@dimen/_130mdp"
             android:layout_centerInParent="true"
             android:visibility="invisible"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading" />
-
-
-
-
+            app:lottie_rawRes="@raw/lottie_loading" />
 
 
     </RelativeLayout>
-
 
 
 

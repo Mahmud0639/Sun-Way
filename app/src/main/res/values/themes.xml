@@ -53,5 +53,29 @@
         <item name="colorAccent">#807878</item>
     </style>
 
+
+
+    <style name="AppTheme.Light" parent="Theme.AppCompat.Light">
+        <!-- Customize light mode attributes -->
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkLight</item>
+        <item name="colorAccent">@color/colorAccentLight</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <!-- Customize dark mode attributes -->
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDark</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+    </style>
+
+    <style name="mySwitchBack">
+        <item name="colorControlActivated">@color/background_theme</item>
+        <item name="colorSwitchThumbNormal">#BDBDBD</item>
+        <item name="android:colorForeground">#42221f1f</item>
+    </style>
+
+
+
     Theme.MaterialComponents.DayNight.DarkActionBar
 </resources>

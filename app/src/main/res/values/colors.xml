@@ -35,4 +35,15 @@
     <color name="red_deep">#C11212</color>
     <color name="blue">#2196F3</color>
     <color name="red">#F44336</color>
+
+
+
+    <color name="colorPrimaryLight">#FFFFFF</color>
+    <color name="colorPrimaryDarkLight">#CCCCCC</color>
+    <color name="colorAccentLight">#FF4081</color>
+
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimaryDarkDark">#333333</color>
+    <color name="colorAccentDark">#FF4081</color>
+
 </resources>
