@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_blur"
+    tools:context=".NoInternetActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_300mdp"
+        app:lottie_rawRes="@raw/no_con"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/refresh"
+        android:layout_width="@dimen/_200mdp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/noConnection"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Refresh"
+        android:textAllCaps="false"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="@dimen/_13font_mdp"
+        android:background="@drawable/no_internet_refresh_btn_click_effect"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

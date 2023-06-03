@@ -91,12 +91,12 @@ private Context mContext;
         binding = FragmentProfileBinding.inflate(inflater,container,false);
         auth = FirebaseAuth.getInstance();
 
-
+        binding.progressBar.setVisibility(View.VISIBLE);
         FirebaseFirestore.getInstance().collection("users")
                 .document(auth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                binding.progressBar.setVisibility(View.VISIBLE);
+
                 if (documentSnapshot.exists()){
                      fullNameUser = documentSnapshot.getString("fullName");
                      phoneNumberUser = documentSnapshot.getString("phoneNumber");
@@ -142,12 +142,12 @@ private Context mContext;
                 }
             });
 
-            binding.settings.setOnClickListener(new View.OnClickListener() {
+      /*      binding.settings.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(mContext, SettingsActivity.class));
                 }
-            });
+            });*/
 
 
         return binding.getRoot();

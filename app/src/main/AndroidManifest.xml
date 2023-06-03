@@ -3,6 +3,9 @@
     package="com.manuni.sunway">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".MyApplication"
@@ -16,10 +19,15 @@
         android:theme="@style/Theme.SunWay"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ReferCodeActivity"
+            android:name=".NoInternetActivity"
             android:exported="false"
+            android:theme="@style/Theme.SunWay.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+        <activity
+            android:name=".ReferCodeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:theme="@style/Theme.SunWay.NoActionBar"/>
+            android:exported="false"
+            android:theme="@style/Theme.SunWay.NoActionBar" />
         <activity
             android:name=".SignUpActivityForGoogle"
             android:exported="false"
@@ -41,7 +49,8 @@
         <activity
             android:name=".TaskViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.SunWay.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
@@ -52,9 +61,7 @@
             android:exported="true"
             android:label="User Info"
             android:theme="@style/Theme.SunWay.NoActionBar.Material"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".GetOTPActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"

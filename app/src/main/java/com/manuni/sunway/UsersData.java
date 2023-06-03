@@ -2,7 +2,7 @@ package com.manuni.sunway;
 
 public class UsersData {
     private String fullName,phoneNumber,email,uid,online,referCode,totalCount,adminMessage,timestamp,profileImage,userReferCode;
-   private double balance=5.00;
+   private double balance=0.00;
 
     public UsersData() {
     }

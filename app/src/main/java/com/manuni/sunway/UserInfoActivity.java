@@ -215,8 +215,9 @@ public class UserInfoActivity extends AppCompatActivity {
                 hashMap.put("email",""+my_email);
                 hashMap.put("uid", "" + auth.getUid());
                 hashMap.put("online", "true");
+                hashMap.put("withdrawCount","0");
                 hashMap.put("usedReferCode",userRefer);
-                hashMap.put("balance","5.00");
+                hashMap.put("balance","0.00");
                 hashMap.put("referCode",""+referCode);
                 hashMap.put("totalCount","0");
                 hashMap.put("adminMessage","Hi,Thanks for using our App.");
@@ -288,8 +289,9 @@ public class UserInfoActivity extends AppCompatActivity {
                         hashMap.put("email",""+my_email);
                         hashMap.put("uid",""+auth.getUid());
                         hashMap.put("online","true");
-                        hashMap.put("balance","5.00");
+                        hashMap.put("balance","0.00");
                         hashMap.put("totalCount","0");
+                        hashMap.put("withdrawCount","0");
                         hashMap.put("usedReferCode",userRefer);
                         hashMap.put("referCode",""+referCode);
                         // hashMap.put("taskTaken","false");
@@ -390,17 +392,35 @@ public class UserInfoActivity extends AppCompatActivity {
                                 for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                                     String uid = documentSnapshot.getString("uid");
 
-                                    firebaseFirestore.collection("users").document(uid).update("balance", FieldValue.increment(Double.parseDouble("3"))).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("referUid",""+uid);
+
+                                    FirebaseDatabase.getInstance().getReference().child("Users")
+                                            .child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            shouldStopLoop = true;
+                                            FirebaseFirestore.getInstance().collection("users").document(auth.getUid()).update(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(UserInfoActivity.this, "referUid set.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+                                        }
+                                    });
+                                   /* firebaseFirestore.collection("users").document(uid).update("balance", FieldValue.increment(Double.parseDouble("3"))).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
 
-                                            updateRealtimeDatabase(uid);
+                                          //  updateRealtimeDatabase(uid);
 
                                             Toast.makeText(UserInfoActivity.this, "Field value incremented.", Toast.LENGTH_SHORT).show();
 
-                                            shouldStopLoop = true;
+
                                         }
-                                    });
+                                    });*/
 
                                 }
                             }
@@ -420,7 +440,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     }
 
-    private void updateRealtimeDatabase(String userId) {
+   /* private void updateRealtimeDatabase(String userId) {
 
         double giveDollar = 3.00;
 
@@ -455,6 +475,6 @@ public class UserInfoActivity extends AppCompatActivity {
 
 
 
-    }
+    }*/
 
 }

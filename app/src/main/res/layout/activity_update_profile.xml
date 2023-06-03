@@ -48,16 +48,16 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profilePic"
-                android:layout_width="@dimen/_65mdp"
-                android:layout_height="@dimen/_65mdp"
-                android:src="@drawable/impl6"
-                app:civ_border_width="@dimen/_2mdp"
-                app:civ_border_color="@color/white"
+                android:layout_width="82dp"
+                android:layout_height="89dp"
                 android:layout_marginTop="@dimen/_5mdp"
+                android:src="@drawable/impl6"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="@dimen/_2mdp"
                 app:layout_constraintBottom_toBottomOf="@id/constraint1"
                 app:layout_constraintEnd_toEndOf="@id/constraint1"
                 app:layout_constraintStart_toStartOf="@id/constraint1"
-               app:layout_constraintTop_toBottomOf="@id/toolBar"
+                app:layout_constraintTop_toBottomOf="@id/toolBar"
                 app:layout_constraintVertical_bias="0.24000001" />
 
             <ImageView
@@ -65,8 +65,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/oval_white"
-                android:padding="@dimen/_7mdp"
-                android:src="@drawable/mansmall"
+                android:padding="@dimen/_3mdp"
+                android:src="@drawable/ic_add"
                 app:layout_constraintBottom_toTopOf="@id/profilePic"
                 app:layout_constraintEnd_toEndOf="@id/profilePic"
                 app:layout_constraintHorizontal_bias="0.95"
@@ -78,7 +78,7 @@
                 android:id="@+id/nameTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10mdp"
+                android:layout_marginTop="@dimen/_5mdp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Mahmudul Islam Bappi"
                 android:maxWidth="@dimen/_100mdp"
@@ -166,7 +166,7 @@
                     android:layout_marginStart="@dimen/_5mdp"
                     android:background="@drawable/oval_purple"
                     android:padding="@dimen/_5mdp"
-                    android:src="@drawable/man"
+                    android:src="@drawable/ic_user_man"
                     app:layout_constraintBottom_toBottomOf="@id/userNameET"
                     app:layout_constraintStart_toStartOf="@id/userNameET"
                     app:layout_constraintTop_toTopOf="@id/userNameET"
@@ -250,14 +250,13 @@
 
 
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/saveBtn"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30mdp"
-                    android:layout_marginTop="@dimen/_7mdp"
-                    android:backgroundTint="#BE22AB"
-                    android:text="Save"
-                    android:background="@drawable/work_style"
+                    android:layout_marginTop="@dimen/_15mdp"
+                    android:text="Update"
+                    android:background="@drawable/update_btn_click_effect"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     app:cornerRadius="@dimen/_15mdp"

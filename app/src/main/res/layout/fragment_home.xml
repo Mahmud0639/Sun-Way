@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c1c1c1"
+    android:background="@drawable/bg_blur"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.HomeFragment">
 
   <RelativeLayout
       android:id="@+id/rel"
-      android:background="#009688"
+      android:background="@drawable/action_bar_three_d"
       android:layout_width="match_parent"
       android:layout_height="@dimen/_50mdp">
     <TextView
@@ -61,7 +61,8 @@
       <androidx.cardview.widget.CardView
           android:id="@+id/categoryCardView"
           android:layout_width="match_parent"
-          android:layout_height="@dimen/_70mdp"
+          android:layout_height="@dimen/_120mdp"
+          app:cardBackgroundColor="@color/white"
           android:layout_below="@id/carouselCardView"
           android:layout_margin="@dimen/_2mdp"
           app:cardCornerRadius="@dimen/_5mdp">
@@ -70,10 +71,12 @@
             android:layout_height="match_parent">
 
           <ImageView
-              android:layout_width="@dimen/_40mdp"
-              android:layout_height="@dimen/_40mdp"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/_100mdp"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent"
+              android:src="@drawable/sunwa"
+              android:scaleType="centerCrop"
               app:layout_constraintBottom_toBottomOf="parent"
               />
 
@@ -85,14 +88,15 @@
       <RelativeLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:background="#421B0F"
         >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/workPackRV"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            android:layout_height="match_parent"/>
+            app:spanCount="2" />
         <LinearLayout
             android:id="@+id/shimmerViewLayout"
             android:layout_width="match_parent"
@@ -100,7 +104,7 @@
           <com.facebook.shimmer.ShimmerFrameLayout
               android:id="@+id/shimmer_view_container"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               >
             <include layout="@layout/shimmer_for_category"/>
           </com.facebook.shimmer.ShimmerFrameLayout>

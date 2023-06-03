@@ -7,17 +7,19 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#68DEED"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:contentPadding="@dimen/_5mdp"
+        app:cardBackgroundColor="#72FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:cardElevation="@dimen/_3mdp"
+        app:cardCornerRadius="@dimen/_5mdp"
         app:cardUseCompatPadding="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+         >
             <ImageView
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +109,8 @@
                 android:weightSum="3"
                 android:layout_marginTop="@dimen/_5mdp"
                 android:padding="@dimen/_5mdp"
-                android:background="#54000000">
+                android:backgroundTint="#72391E1E"
+                android:background="@drawable/tems_bg">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,7 +148,7 @@
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Daily Product"/>
+                        android:text="Daily Profit"/>
 
                 </LinearLayout>
                   <LinearLayout
@@ -181,7 +184,7 @@
                 android:layout_marginTop="@dimen/_10mdp"
                 android:text="Take $4.00"
                 android:textStyle="bold"
-                android:background="@android:color/holo_orange_dark"
+                android:background="@drawable/edit_text_withdraw_three_d"
                 android:enabled="false"
                 android:textSize="@dimen/_13font_mdp"/>
 

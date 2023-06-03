@@ -3,7 +3,10 @@ package com.manuni.sunway;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,6 +34,8 @@ public class PayToJoinActivity extends AppCompatActivity {
         binding = ActivityPayToJoinBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+
         progressDialog = new ProgressDialog(PayToJoinActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -41,70 +46,93 @@ public class PayToJoinActivity extends AppCompatActivity {
         price = getIntent().getStringExtra("price");
 
 
+        getSupportActionBar().setTitle("Recharge: "+"$"+price);
       //  String uidUser = data.getId();
+
+        binding.copyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String clData = binding.trcAddress.getText().toString().trim();
+
+                ClipboardManager clipboardManager = (ClipboardManager) getApplicationContext().getSystemService(CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("text",clData);
+                clipboardManager.setPrimaryClip(clipData);
+
+                Toast.makeText(PayToJoinActivity.this, "Text copied!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                progressDialog.show();
-               // Toast.makeText(PayToJoinActivity.this, ""+packId, Toast.LENGTH_SHORT).show();
+                String accountNumberTRC = binding.accountNumberET.getText().toString().trim();
 
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-                auth = FirebaseAuth.getInstance();
-                String myKey = databaseReference.push().getKey();
+                if (TextUtils.isEmpty(accountNumberTRC)){
+                    Toast.makeText(PayToJoinActivity.this, "Give your TRC-20 address.", Toast.LENGTH_SHORT).show();
+                }else {
+                    progressDialog.show();
+                    // Toast.makeText(PayToJoinActivity.this, ""+packId, Toast.LENGTH_SHORT).show();
 
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("" + packName, "locked");
-                hashMap.put("packKey",""+myKey);
-                hashMap.put("packId",""+packId);
-                hashMap.put("status","Pending");
-                hashMap.put("price",""+price);
-                hashMap.put("taskTaken","false");
-                hashMap.put("packName",""+packName);
-                hashMap.put("userId",""+auth.getUid());
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+                    auth = FirebaseAuth.getInstance();
+                    String myKey = databaseReference.push().getKey();
 
-                databaseReference.child(auth.getUid()).child("userPackInfo").child(myKey).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
-                        DatabaseReference myD = FirebaseDatabase.getInstance().getReference().child("Users");
-                        myD.child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                String totalOf = ""+snapshot.child("totalCount").getValue();
-                                int myTotalInt = Integer.parseInt(totalOf);
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("" + packName, "locked");
+                    hashMap.put("packKey",""+myKey);
+                    hashMap.put("packId",""+packId);
+                    hashMap.put("status","Pending");
+                    hashMap.put("price",""+price);
+                    hashMap.put("taskTaken","false");
+                    hashMap.put("packName",""+packName);
+                    hashMap.put("accountNumber",""+accountNumberTRC);
+                    hashMap.put("userId",""+auth.getUid());
 
-                                int addOne = myTotalInt + 1;
+                    databaseReference.child(auth.getUid()).child("userPackInfo").child(myKey).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            progressDialog.dismiss();
+                            DatabaseReference myD = FirebaseDatabase.getInstance().getReference().child("Users");
+                            myD.child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    String totalOf = ""+snapshot.child("totalCount").getValue();
+                                    int myTotalInt = Integer.parseInt(totalOf);
 
-                                HashMap<String,Object> hashMap1 = new HashMap<>();
-                                hashMap1.put("totalCount",""+addOne);
+                                    int addOne = myTotalInt + 1;
 
-                                myD.child(auth.getUid()).updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(PayToJoinActivity.this, "Added one value to totalCount child.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
+                                    HashMap<String,Object> hashMap1 = new HashMap<>();
+                                    hashMap1.put("totalCount",""+addOne);
 
-                            @Override
-                            public void onCancelled(DatabaseError error) {
+                                    myD.child(auth.getUid()).updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(PayToJoinActivity.this, "Added one value to totalCount child.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
 
-                            }
-                        });
+                                @Override
+                                public void onCancelled(DatabaseError error) {
+
+                                }
+                            });
 
 
-                        Toast.makeText(PayToJoinActivity.this, "Package info updated.", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(PayToJoinActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            Toast.makeText(PayToJoinActivity.this, "Package info updated.", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(PayToJoinActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
 
 
             }
@@ -114,4 +142,6 @@ public class PayToJoinActivity extends AppCompatActivity {
 
 
     }
+
+
 }

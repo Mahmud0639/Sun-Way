@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient android:startColor="#24A398"
-        android:endColor="#057E73"
+    <gradient android:startColor="#FD5A3333"
+        android:endColor="#0E0E0E"
         android:angle="270"/>
     <corners android:radius="50dp"/>
    <!-- <solid android:color="@color/background_2_end_wallet"/>

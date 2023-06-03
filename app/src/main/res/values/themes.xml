@@ -47,7 +47,7 @@
     </style>
 
     <style name="ProgressBarStyle">
-        <item name="colorAccent">@color/color_orange</item>
+        <item name="colorAccent">#CFCCCC</item>
     </style>
     <style name="progressBarStyle2">
         <item name="colorAccent">#807878</item>

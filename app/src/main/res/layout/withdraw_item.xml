@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_8mdp"
+        app:contentPadding="@dimen/_3mdp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageWithdraw"
+                android:layout_width="@dimen/_35mdp"
+                android:layout_height="@dimen/_35mdp"
+                android:layout_margin="@dimen/_3mdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/impl6"/>
+
+            <TextView
+                android:id="@+id/nameWithdraw"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5mdp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Mahmudul Islam"
+                android:textColor="#424141"
+                android:ellipsize="end"
+                app:layout_constraintBottom_toTopOf="@id/balanceWithdraw"
+                app:layout_constraintEnd_toStartOf="@+id/approveStatus"
+                app:layout_constraintStart_toEndOf="@id/imageWithdraw"
+                app:layout_constraintTop_toTopOf="@id/imageWithdraw"
+                app:layout_constraintVertical_chainStyle="packed" />
+            <TextView
+                android:id="@+id/balanceWithdraw"
+                android:layout_width="@dimen/_35mdp"
+                android:layout_height="wrap_content"
+                android:text="$45"
+                android:gravity="center"
+                android:padding="@dimen/_2mdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9font_mdp"
+                android:background="@drawable/withdraw_backgroiund"
+                app:layout_constraintBottom_toBottomOf="@id/imageWithdraw"
+                app:layout_constraintTop_toBottomOf="@id/nameWithdraw"
+                app:layout_constraintStart_toStartOf="@id/nameWithdraw"
+                android:fontFamily="@font/roboto_medium"/>
+
+            <TextView
+                android:id="@+id/dateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="17 May,2023"
+                app:layout_constraintBottom_toBottomOf="@id/balanceWithdraw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.11"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="@dimen/_8font_mdp"
+                app:layout_constraintStart_toEndOf="@id/balanceWithdraw"
+                app:layout_constraintTop_toBottomOf="@id/nameWithdraw" />
+            <TextView
+                android:id="@+id/approveStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pending"
+                android:padding="@dimen/_5mdp"
+                android:background="@drawable/text_pending_bg"
+                android:textSize="@dimen/_9font_mdp"
+                app:layout_constraintTop_toTopOf="@id/nameWithdraw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/nameWithdraw"
+                android:layout_marginEnd="@dimen/_20mdp"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/red"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="@dimen/_20mdp"
+                android:layout_height="@dimen/_20mdp"
+                app:layout_constraintTop_toBottomOf="@id/approveStatus"
+                app:layout_constraintStart_toStartOf="@id/approveStatus"
+                app:layout_constraintEnd_toEndOf="@id/approveStatus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/dollar"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

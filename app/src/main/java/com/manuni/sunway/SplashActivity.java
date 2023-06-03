@@ -3,6 +3,9 @@ package com.manuni.sunway;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
@@ -38,37 +41,53 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if (auth.getCurrentUser()==null){
-                    startActivity(new Intent(SplashActivity.this,SignUpActivityForGoogle.class));
-                    finish();
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+                NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+                if (wifi.isConnected()){
+                   loadAuthUser();
+                }else if (mobile.isConnected()){
+                    loadAuthUser();
                 }else {
-
-
-                    dbRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            if (!snapshot.exists()){
-                                startActivity(new Intent(SplashActivity.this,UserInfoActivity.class));
-                                finish();
-                            }else {
-                                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                                finish();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-
-                        }
-                    });
-                    /*startActivity(new Intent(SplashActivity.this,SignUpActivityForGoogle.class));
-                    finish();*/
+                    startActivity(new Intent(SplashActivity.this,NoInternetActivity.class));
+                    finish();
                 }
+
+
 
             }
         },3000);
 
 
+    }
+    private void loadAuthUser(){
+        if (auth.getCurrentUser()==null){
+            startActivity(new Intent(SplashActivity.this,SignUpActivityForGoogle.class));
+            finish();
+        }else {
+
+
+            dbRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (!snapshot.exists()){
+                        startActivity(new Intent(SplashActivity.this,UserInfoActivity.class));
+                        finish();
+                    }else {
+                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+
+                }
+            });
+                    /*startActivity(new Intent(SplashActivity.this,SignUpActivityForGoogle.class));
+                    finish();*/
+        }
     }
 
 }

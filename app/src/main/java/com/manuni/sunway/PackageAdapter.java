@@ -27,11 +27,15 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
     private Context context;
     private ArrayList<PackageModel> list;
     private FirebaseAuth auth;
+    boolean isUnlocked = false;
+    boolean isLocked = false;
 
     public PackageAdapter(Context context, ArrayList<PackageModel> list) {
         this.context = context;
         this.list = list;
         auth = FirebaseAuth.getInstance();
+
+
     }
 
     @Override
@@ -68,6 +72,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
         });*/
 
 
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -81,12 +86,24 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
                             holder.binding.joinedBtn.setVisibility(View.VISIBLE);
                             holder.binding.lottieLockSmall.setVisibility(View.INVISIBLE);
                             holder.binding.joinNowBtn.setText("Joined");
+
+                           // isUnlocked = true;
+
                         }else if (levelValue.equals("locked")&&statusValue.equals("Pending")){
                             holder.binding.joinNowBtn.setVisibility(View.VISIBLE);
                             holder.binding.joinedBtn.setVisibility(View.INVISIBLE);
                             holder.binding.lottieLockSmall.setVisibility(View.VISIBLE);
                             holder.binding.joinNowBtn.setText("Pending");
+
+                           // isLocked = true;
                         }
+
+                       /* if (isUnlocked){
+                            break;
+                        }
+                        if (isLocked){
+                            break;
+                        }*/
                     }
                 }
             }

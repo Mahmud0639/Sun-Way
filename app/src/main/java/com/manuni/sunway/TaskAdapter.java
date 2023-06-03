@@ -80,9 +80,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         });
 
         try {
-            Picasso.get().load(packImage).placeholder(R.drawable.impl1).into(holder.binding.taskImage);
+            Picasso.get().load(packImage).into(holder.binding.taskImage);
         } catch (Exception e) {
-            holder.binding.taskImage.setImageResource(R.drawable.impl1);
+           e.printStackTrace();
         }
 
         holder.binding.levelName.setText("VIP: "+data.getLevelName());

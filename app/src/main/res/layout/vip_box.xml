@@ -58,9 +58,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Price:$300"
-                android:textSize="@dimen/_14font_mdp"
-                android:textStyle="bold"
-                android:textColor="#ff22"
+                android:textSize="@dimen/_10font_mdp"
+                android:fontFamily="@font/roboto_medium"
+                android:background="@drawable/bg_shadow"
+               android:paddingStart="@dimen/_5mdp"
+                android:paddingEnd="@dimen/_5mdp"
+                android:paddingTop="@dimen/_2mdp"
+                android:paddingBottom="@dimen/_2mdp"
+                android:textColor="#FFEB3B"
                 app:layout_constraintStart_toEndOf="@id/dailyTaskBtn"
                 app:layout_constraintTop_toTopOf="@id/dailyTaskBtn"
                 app:layout_constraintBottom_toBottomOf="@id/dailyTaskBtn"
@@ -81,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Join Now"
-                android:background="@drawable/join_btn_style"
+                android:background="@drawable/click_effect_textview"
                 app:layout_constraintTop_toTopOf="@id/lvTxt"
                  app:layout_constraintEnd_toEndOf="parent"
                 android:paddingStart="@dimen/_10mdp"
@@ -96,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:text="Joined"
                 android:visibility="invisible"
-                android:background="@drawable/join_btn_style"
+                android:background="@drawable/click_effect_textview"
                 app:layout_constraintTop_toTopOf="@id/lvTxt"
                  app:layout_constraintEnd_toEndOf="parent"
                 android:paddingStart="@dimen/_10mdp"
@@ -155,7 +160,7 @@
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Daily Product"/>
+                        android:text="Daily Profit"/>
 
                 </LinearLayout>
                   <LinearLayout

@@ -33,7 +33,7 @@
             android:layout_width="@dimen/_170mdp"
             android:layout_height="@dimen/_170mdp"
             android:layout_marginTop="@dimen/_10mdp"
-            android:src="@drawable/qr"
+            android:src="@drawable/ic_address_trc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rechargeTxt" />
@@ -48,7 +48,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="@dimen/_5mdp"
-            android:text="TTXL2JKKHJLDRERC2lfjskldjgfgfgdfdfdfdfd"
+            android:text="TDqWYV1XQ4TeU27xdHB93mgke79raePCyn"
             android:textAllCaps="true"
             app:layout_constraintEnd_toStartOf="@+id/copyBtn"
             app:layout_constraintHorizontal_bias="0.5"
@@ -72,6 +72,20 @@
             app:layout_constraintStart_toEndOf="@+id/trcAddress"
             app:layout_constraintTop_toTopOf="@id/trcAddress" />
 
+        <EditText
+            android:id="@+id/accountNumberET"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_txt_bg_account"
+            android:padding="@dimen/_7mdp"
+            android:hint="Your TRC-20 address"
+            android:drawableStart="@drawable/ic_tron"
+            android:drawablePadding="@dimen/_10mdp"
+            android:layout_marginTop="@dimen/_5mdp"
+            app:layout_constraintTop_toBottomOf="@id/trcAddress"
+            app:layout_constraintStart_toStartOf="@id/trcAddress"
+            app:layout_constraintEnd_toEndOf="@id/copyBtn"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/submitBtn"
             android:layout_width="0dp"
@@ -84,8 +98,8 @@
             android:textColor="#F8F1B7"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/copyBtn"
-            app:layout_constraintStart_toStartOf="@id/trcAddress"
-            app:layout_constraintTop_toBottomOf="@id/trcAddress" />
+            app:layout_constraintStart_toStartOf="@id/accountNumberET"
+            app:layout_constraintTop_toBottomOf="@id/accountNumberET" />
 
         <TextView
             android:layout_width="0dp"

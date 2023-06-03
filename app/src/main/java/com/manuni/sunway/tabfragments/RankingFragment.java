@@ -59,7 +59,7 @@ private Context mContext;
         binding = FragmentRankingBinding.inflate(inflater,container,false);
 
         data = new ArrayList<>();
-        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.lottieLoopDot.setVisibility(View.VISIBLE);
 
         FirebaseFirestore.getInstance().collection("users")
                 .orderBy("balance", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -75,7 +75,7 @@ private Context mContext;
                 binding.rankRV.setHasFixedSize(true);
                 adapter.notifyDataSetChanged();
 
-                binding.progressBar.setVisibility(View.INVISIBLE);
+                binding.lottieLoopDot.setVisibility(View.INVISIBLE);
 
             }
         });
