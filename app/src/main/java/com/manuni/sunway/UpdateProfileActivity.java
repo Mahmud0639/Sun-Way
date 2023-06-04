@@ -15,7 +15,10 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -128,15 +131,30 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         HashMap<String,Object> myHash = new HashMap<>();
                         myHash.put("name",""+myName);
-                        FirebaseDatabase.getInstance().getReference().child("Withdraws")
-                                .child(auth.getUid())
-                                .updateChildren(myHash).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        FirebaseDatabase.getInstance().getReference().child("Withdraws").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onSuccess(Void unused) {
-                                progressDialog.dismiss();
-                                Toast.makeText(UpdateProfileActivity.this, "Your personal info has been updated!", Toast.LENGTH_SHORT).show();
+                            public void onDataChange(DataSnapshot snapshot) {
+                                if (snapshot.exists()){
+                                    FirebaseDatabase.getInstance().getReference().child("Withdraws")
+                                            .child(auth.getUid())
+                                            .updateChildren(myHash).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(UpdateProfileActivity.this, "Your personal info has been updated!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }else {
+                                    progressDialog.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+
                             }
                         });
+
 
                     }
                 });
@@ -174,7 +192,31 @@ public class UpdateProfileActivity extends AppCompatActivity {
                                 hash.put("name",""+myName);
                                 hash.put("image",""+downloadUrl);
 
-                                FirebaseDatabase.getInstance().getReference().child("Withdraws")
+                                FirebaseDatabase.getInstance().getReference().child("Withdraws").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (snapshot.exists()){
+                                            FirebaseDatabase.getInstance().getReference().child("Withdraws")
+                                                    .child(auth.getUid())
+                                                    .updateChildren(hash).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(UpdateProfileActivity.this, "Your personal info has been updated!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }else {
+                                            progressDialog.dismiss();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+
+                                    }
+                                });
+
+                           /*     FirebaseDatabase.getInstance().getReference().child("Withdraws")
                                         .child(auth.getUid())
                                         .updateChildren(hash).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -182,7 +224,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                                         progressDialog.dismiss();
                                         Toast.makeText(UpdateProfileActivity.this, "Your personal info has been updated!", Toast.LENGTH_SHORT).show();
                                     }
-                                });
+                                });*/
 
                             }
                         });

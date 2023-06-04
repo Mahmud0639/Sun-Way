@@ -241,6 +241,7 @@ public class UserInfoActivity extends AppCompatActivity {
                             public void onComplete(Task<Void> task) {
                                 if (task.isSuccessful()){
                                   // progressDialog.dismiss();
+
                                     incrementBalance(userRefer);
                                     startActivity(new Intent(UserInfoActivity.this,MainActivity.class));
                                     finish();
@@ -383,33 +384,33 @@ public class UserInfoActivity extends AppCompatActivity {
                     String referCode = snapshot.getString("referCode");
                    // String uid = snapshot.getString("uid");
 
+                    if (!referCode.equals("")){
+                        if (referCode.equals(usRefer)){
 
-                    if (referCode.equals(usRefer)){
-
-                        firebaseFirestore.collection("users").whereEqualTo("referCode",referCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
-                                    String uid = documentSnapshot.getString("uid");
+                            firebaseFirestore.collection("users").whereEqualTo("referCode",referCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                                        String uid = documentSnapshot.getString("uid");
 
 
-                                    HashMap<String,Object> hashMap = new HashMap<>();
-                                    hashMap.put("referUid",""+uid);
+                                        HashMap<String,Object> hashMap = new HashMap<>();
+                                        hashMap.put("referUid",""+uid);
 
-                                    FirebaseDatabase.getInstance().getReference().child("Users")
-                                            .child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            shouldStopLoop = true;
-                                            FirebaseFirestore.getInstance().collection("users").document(auth.getUid()).update(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    Toast.makeText(UserInfoActivity.this, "referUid set.", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+                                        FirebaseDatabase.getInstance().getReference().child("Users")
+                                                .child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                shouldStopLoop = true;
+                                                FirebaseFirestore.getInstance().collection("users").document(auth.getUid()).update(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Toast.makeText(UserInfoActivity.this, "referUid set.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
 
-                                        }
-                                    });
+                                            }
+                                        });
                                    /* firebaseFirestore.collection("users").document(uid).update("balance", FieldValue.increment(Double.parseDouble("3"))).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
@@ -422,12 +423,15 @@ public class UserInfoActivity extends AppCompatActivity {
                                         }
                                     });*/
 
+                                    }
                                 }
-                            }
-                        });
+                            });
 
 
+                        }
                     }
+
+
 
                     if (shouldStopLoop){
                         break;

@@ -77,7 +77,7 @@ public class WithdrawFragment extends Fragment {
 
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                         WithdrawModel data = dataSnapshot.getValue(WithdrawModel.class);
-                        list.add(data);
+                        list.add(0,data);
 
                     }
 
