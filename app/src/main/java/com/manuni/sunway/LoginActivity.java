@@ -17,11 +17,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        binding.haveAccount.setOnClickListener(new View.OnClickListener() {
+        /*binding.haveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
-        });
+        });*/
     }
 }

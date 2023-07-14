@@ -19,10 +19,15 @@
         android:theme="@style/Theme.SunWay"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".NoInternetActivity"
+            android:name=".IncomeActivity"
             android:exported="false"
             android:theme="@style/Theme.SunWay.NoActionBar"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+        <activity
+            android:name=".NoInternetActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:exported="false"
+            android:theme="@style/Theme.SunWay.NoActionBar" />
         <activity
             android:name=".ReferCodeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
@@ -75,7 +80,7 @@
             android:name=".SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:exported="true"
-            android:theme="@style/Theme.SunWay.NoActionBar">
+            android:theme="@style/Theme.SunWay.NoActionBar.Material.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

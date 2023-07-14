@@ -16,19 +16,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:lottie_rawRes="@raw/sun"/>
+        app:lottie_rawRes="@raw/currency_exchange"/>
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sunWayAnim"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/sunway_sp"/>
+
+  <!--  <TextView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:text="Sun Way"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="@dimen/_40font_mdp"
         android:textStyle="bold"
+        android:padding="@dimen/_10mdp"
+        android:gravity="center"
+        android:background="@drawable/edit_text_withdraw_three_d"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sunWayAnim" />
+        app:layout_constraintTop_toBottomOf="@id/sunWayAnim" />-->
 
 
 

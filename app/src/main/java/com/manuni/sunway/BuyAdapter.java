@@ -1,6 +1,7 @@
 package com.manuni.sunway;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
     private FirebaseAuth auth;
     private String balanceOf, adminMessageOf, emailOf, fullNameOf, onlineOf, phoneNumberOf, profileImageOf, taskTakenOf, referCodeOf, timestampOf, uidOf;
     private String packKeyOf;
-    private  String packKeyOfI;
+    private  String packKeyOfI,packId;
 
     public BuyAdapter(Context context, ArrayList<PackageModel> list) {
         this.context = context;
@@ -115,6 +116,8 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                         if (snapshot.exists()) {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 packKeyOfI = "" + dataSnapshot.child("packKey").getValue();
+                                packId = ""+dataSnapshot.child("packId").getValue();
+
 
                             }
 
@@ -157,7 +160,11 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                 holder.binding.takeDollarBtn.setEnabled(false);
                 holder.binding.myProgress.setVisibility(View.VISIBLE);
 
+                Intent incomeIntent = new Intent(context,IncomeActivity.class);
+                incomeIntent.putExtra("packKey",""+packId);
+                context.startActivity(incomeIntent);
 
+/*
                 DatabaseReference myDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
                 myDatabase.child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -165,7 +172,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                     public void onDataChange(DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             balanceOf = "" + snapshot.child("balance").getValue();
-                           /* adminMessageOf = "" + snapshot.child("adminMessage").getValue();
+                           *//* adminMessageOf = "" + snapshot.child("adminMessage").getValue();
                             emailOf = "" + snapshot.child("email").getValue();
                             fullNameOf = "" + snapshot.child("fullName").getValue();
                             onlineOf = "" + snapshot.child("online").getValue();
@@ -174,7 +181,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                             //  taskTakenOf = ""+snapshot.child("taskTaken").getValue();
                             referCodeOf = "" + snapshot.child("referCode").getValue();
                             timestampOf = "" + snapshot.child("timestamp").getValue();
-                            uidOf = "" + snapshot.child("uid").getValue();*/
+                            uidOf = "" + snapshot.child("uid").getValue();*//*
 
                             HashMap<String, Object> hashMap = new HashMap<>();
 
@@ -183,7 +190,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
 
                             double totalIncome = balanceDouble + incomeBalanceDouble;
 
-                         /*   hashMap.put("adminMessage", "" + adminMessageOf);
+                         *//*   hashMap.put("adminMessage", "" + adminMessageOf);
                             hashMap.put("email", "" + emailOf);
                             hashMap.put("fullName", "" + fullNameOf);
                             hashMap.put("online", "" + onlineOf);
@@ -191,7 +198,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                             hashMap.put("profileImage", "" + profileImageOf);
                             hashMap.put("referCode", "" + referCodeOf);
                             hashMap.put("timestamp", "" + timestampOf);
-                            hashMap.put("uid", "" + uidOf);*/
+                            hashMap.put("uid", "" + uidOf);*//*
                             // hashMap.put("taskTaken","true");
                             hashMap.put("balance",totalIncome);
                             FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -205,7 +212,13 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                         @Override
                                         public void onComplete(Task<Void> task) {
                                             if (task.isSuccessful()){
-                                                Toast.makeText(context, "Income added.", Toast.LENGTH_SHORT).show();
+                                            FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").child(packKeyOfI).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(context, "Income added.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
                                             }
 
                                         }
@@ -216,11 +229,11 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                     // Toast.makeText(context, "" + packageLevelName, Toast.LENGTH_SHORT).show();
 
 
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").child(packKeyOfI).addListenerForSingleValueEvent(new ValueEventListener() {
+                              *//*      FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").child(packKeyOfI).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot snapshot) {
                                             String paKey = "" + snapshot.child("packKey").getValue();
-                                            Toast.makeText(context, ""+paKey, Toast.LENGTH_SHORT).show();
+                                          //  Toast.makeText(context, ""+paKey, Toast.LENGTH_SHORT).show();
 
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").child(paKey).addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
@@ -237,12 +250,13 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                                         HashMap<String, Object> hashMap1 = new HashMap<>();
 //
                                                         hashMap1.put("taskTaken", "true");
+
                                                         // hashMap1.put("userId",""+userIdOfM);
 
                                                         FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").child(packKeyOfM).updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void unused) {
-                                                                Toast.makeText(context, "Pack data updated.", Toast.LENGTH_SHORT).show();
+                                                                //Toast.makeText(context, "Pack data updated.", Toast.LENGTH_SHORT).show();
 
                                                             }
                                                         });
@@ -261,8 +275,8 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                         public void onCancelled(DatabaseError error) {
 
                                         }
-                                    });
-                 /*                       FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").orderByChild("packName").equalTo(packageLevelName).addValueEventListener(new ValueEventListener() {
+                                    });*//*
+                 *//*                       FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo").orderByChild("packName").equalTo(packageLevelName).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
                                                 if (snapshot.exists()){
@@ -311,9 +325,9 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
 
                                                         }
                                                     });
-                                                       *//* }else if (taskStatus.equals("true")){
+                                                       *//**//* }else if (taskStatus.equals("true")){
                                                             return;
-                                                        }*//*
+                                                        }*//**//*
 
                                                 }
                                             }
@@ -322,13 +336,13 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                             public void onCancelled(DatabaseError error) {
 
                                             }
-                                        });*/
+                                        });*//*
 
                                 }
                             });
 
 
-                            Toast.makeText(context, "" + balanceOf, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, "" + balanceOf, Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -337,7 +351,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                     public void onCancelled(DatabaseError error) {
 
                     }
-                });
+                });*/
 
 
               /*  myDatabase.orderByChild("uid").equalTo(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

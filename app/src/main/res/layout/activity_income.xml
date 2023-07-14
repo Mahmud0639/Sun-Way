@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#503535"
+    tools:context=".IncomeActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/productTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:text="Product to be sell"
+            android:layout_marginTop="@dimen/_40mdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_34font_mdp"
+            app:layout_constraintBottom_toTopOf="@id/viewPageContent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--<androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/incomeRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/buy_product_income"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPageContent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_300mdp"
+            app:layout_constraintBottom_toTopOf="@id/nextBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_10mdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productTxt"
+            app:layout_constraintVertical_chainStyle="packed"
+            />
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20mdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Go Next"
+            android:textAllCaps="false"
+            android:drawableEnd="@drawable/next_double_arrow"
+            android:background="@drawable/btn_bg"
+            android:paddingEnd="@dimen/_10mdp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/viewPageContent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
