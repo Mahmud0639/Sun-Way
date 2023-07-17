@@ -43,7 +43,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
 
         holder.binding.name.setText(fullNameUser);
-        holder.binding.coins.setText("$"+balance);
+        holder.binding.coins.setText(String.format("$%.2f",balance));
         try {
             Picasso.get().load(profileImage).placeholder(R.drawable.ic_person).into(holder.binding.imageView8);
         } catch (Exception e) {

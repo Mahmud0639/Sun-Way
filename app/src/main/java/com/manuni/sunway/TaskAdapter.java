@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,17 +47,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         String packName = data.getLevelName();
         String packImage = data.getPackImage();
 
-
-        FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo")
-                .addValueEventListener(new ValueEventListener() {
+        ValueEventListener valueEventListenerForTask = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                //Toast.makeText(context, ""+packName, Toast.LENGTH_SHORT).show();
-
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     String status = ""+dataSnapshot.child(packName).getValue();
-                  //  Toast.makeText(context, ""+status, Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(context, ""+status, Toast.LENGTH_SHORT).show();
                     if (status.equals("unlocked")){
                         holder.binding.viewBack.setEnabled(true);
                         holder.binding.viewBack.setVisibility(View.INVISIBLE);
@@ -68,16 +64,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     }
 
                 }
-
-
-
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+
+
+      DatabaseReference databaseReference =  FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo");
+
+      databaseReference.addValueEventListener(valueEventListenerForTask);
+
+      holder.itemView.setTag(valueEventListenerForTask);
 
         try {
             Picasso.get().load(packImage).into(holder.binding.taskImage);
@@ -179,6 +179,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                //  Toast.makeText(context, ""+data.getLevelName(), Toast.LENGTH_SHORT).show();
             }
         });*/
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull TaskViewHolder holder) {
+        super.onViewRecycled(holder);
+
+        ValueEventListener valueEventListener = (ValueEventListener) holder.itemView.getTag();
+
+        if (valueEventListener!=null){
+            DatabaseReference databaseReference =  FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getUid()).child("userPackInfo");
+            databaseReference.removeEventListener(valueEventListener);
+        }
     }
 
     @Override

@@ -50,7 +50,7 @@
                 android:id="@+id/referTXT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Share your referral code to earn 3$ more"
+                android:text="Share your referral code to earn more"
                 android:textSize="@dimen/_14font_mdp"
                 android:fontFamily="@font/roboto_bold"
                 app:layout_constraintStart_toStartOf="parent"

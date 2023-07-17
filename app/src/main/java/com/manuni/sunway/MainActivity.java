@@ -87,9 +87,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     @Override
     public void onBackPressed() {
+
         if (binding.bottomNav.getSelectedItemId()==R.id.home){
             super.onBackPressed();
-            finish();
+            //finish();
+            finishAffinity();
         }else {
             binding.bottomNav.setSelectedItemId(R.id.home);
         }
@@ -118,4 +120,5 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
         return loadFragments(myFragment);
     }
+
 }

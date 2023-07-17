@@ -34,7 +34,7 @@
                 <ImageView
                     android:id="@+id/taskImage"
                     android:layout_width="@dimen/_100mdp"
-                    android:layout_height="@dimen/_200mdp"
+                    android:layout_height="@dimen/_160mdp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/book"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +52,8 @@
                     android:textSize="@dimen/_14font_mdp"
                     app:layout_constraintTop_toBottomOf="@id/taskImage"
                     app:layout_constraintStart_toStartOf="parent"/>
+
+
                  <TextView
                     android:id="@+id/sellText"
                     android:layout_width="wrap_content"
@@ -73,7 +75,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="@dimen/_14font_mdp"
-                    android:layout_margin="@dimen/_5mdp"
+                    android:layout_marginTop="@dimen/_10mdp"
+                    android:layout_marginBottom="@dimen/_8mdp"
                     android:textStyle="bold"/>
 
 
@@ -89,9 +92,9 @@
 
     <LinearLayout
         android:id="@+id/confirm"
-        android:layout_width="@dimen/_180mdp"
+        android:layout_width="@dimen/_140mdp"
         android:layout_height="@dimen/_25mdp"
-        android:background="@drawable/work_style"
+        android:background="@drawable/sold_btn_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"

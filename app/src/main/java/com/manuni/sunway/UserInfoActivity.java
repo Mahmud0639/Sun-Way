@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.model.content.BlurEffect;
@@ -95,7 +96,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
 
 
-        binding.referSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      /*  binding.referSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
@@ -112,7 +113,7 @@ public class UserInfoActivity extends AppCompatActivity {
                     }
                 }
             }
-        });
+        });*/
 
 
 
@@ -126,7 +127,40 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                inputDataToDatabaseAndStorage();
+                binding.loadLottie.setVisibility(View.VISIBLE);
+
+                String phoneNumber = binding.textInputPhone.getEditText().getText().toString().trim();
+                String userRefer = binding.textInputReferCode.getEditText().getText().toString().trim();
+
+                if (!userRefer.equals("")){
+                    reference.orderByChild("referCode").equalTo(userRefer).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+
+                            if (snapshot.exists()){
+                                inputDataToDatabaseAndStorage(phoneNumber,userRefer);
+                                Toast.makeText(UserInfoActivity.this, "You are ready to go.", Toast.LENGTH_SHORT).show();
+                            }else {
+                                binding.loadLottie.setVisibility(View.GONE);
+                                Toast.makeText(UserInfoActivity.this, "Your refer code is not valid.", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }else {
+                    inputDataToDatabaseAndStorage(phoneNumber,userRefer);
+                }
+
+
 
             }
         });
@@ -134,7 +168,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     }
 
-    private void inputDataToDatabaseAndStorage() {
+    private void inputDataToDatabaseAndStorage(String usPhone,String usRefer) {
 
 
         ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -143,31 +177,32 @@ public class UserInfoActivity extends AppCompatActivity {
 
         if (wifi.isConnected()) {
             try {
-                createAccount();
+                createAccount(usPhone,usRefer);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (mobile.isConnected()) {
             try {
-                createAccount();
+                createAccount(usPhone,usRefer);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
+            binding.loadLottie.setVisibility(View.GONE);
             Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private void createAccount() {
+    private void createAccount(String uPhone,String uRefer) {
 
 
-        saveToDatabase();
+        saveToDatabase(uPhone,uRefer);
 
 
     }
 
-    private void saveToDatabase() {
+    private void saveToDatabase(String phoneNumber, String userRefer) {
 
 
         myPrefs = getSharedPreferences(SignUpActivityForGoogle.SAVE_USER_INFO,Context.MODE_PRIVATE);
@@ -177,8 +212,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
        // binding.loadingLottie.setVisibility(View.VISIBLE);
 
-        String phoneNumber = binding.textInputPhone.getEditText().getText().toString().trim();
-        String userRefer = binding.textInputReferCode.getEditText().getText().toString().trim();
+
+
 
 
 
@@ -197,6 +232,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
 
         if (TextUtils.isEmpty(phoneNumber)){
+            binding.loadLottie.setVisibility(View.GONE);
             binding.textInputPhone.setError("Field can't be empty");
         } else{
           //  progressDialog.show();
@@ -405,7 +441,7 @@ public class UserInfoActivity extends AppCompatActivity {
                                                 FirebaseFirestore.getInstance().collection("users").document(auth.getUid()).update(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void unused) {
-                                                        Toast.makeText(UserInfoActivity.this, "referUid set.", Toast.LENGTH_SHORT).show();
+                                                       // Toast.makeText(UserInfoActivity.this, "referUid set.", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
 

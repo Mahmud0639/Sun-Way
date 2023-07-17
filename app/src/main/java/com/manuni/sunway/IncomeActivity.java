@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -62,6 +63,28 @@ public class IncomeActivity extends AppCompatActivity {
                 if (nextPosition < list.size()) {
                     binding.viewPageContent.setCurrentItem(nextPosition, true);
                 }
+
+                if (currentPosition == list.size()-1){
+                    Toast.makeText(IncomeActivity.this, "Last Item.Can't go to next.", Toast.LENGTH_SHORT).show();
+                    binding.nextBtn.setVisibility(View.INVISIBLE);
+                    binding.previousBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        binding.previousBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentPosition = binding.viewPageContent.getCurrentItem();
+                int previousPosition = currentPosition - 1;
+
+                if (previousPosition >= 0) {
+                    binding.viewPageContent.setCurrentItem(previousPosition, true);
+                } else {
+                    Toast.makeText(IncomeActivity.this, "First Item. Can't go to previous.", Toast.LENGTH_SHORT).show();
+                    binding.previousBtn.setVisibility(View.INVISIBLE);
+                    binding.nextBtn.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -99,4 +122,5 @@ public class IncomeActivity extends AppCompatActivity {
         });
 
     }
+
 }

@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -67,6 +68,8 @@ public class WalletFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    ValueEventListener eventListenerForBalance;
+
     FragmentWalletBinding binding;
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
@@ -85,7 +88,7 @@ public class WalletFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage("Sending request to withdraw...");
 
-        dbRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+         eventListenerForBalance = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String messageAdmin = ""+snapshot.child("adminMessage").getValue();
@@ -102,15 +105,19 @@ public class WalletFragment extends Fragment {
                     binding.healthyAccount.setTextColor(Color.parseColor("#4CAF50"));
                 }
 
-               // binding.currentCoins.setText("$"+String.valueOf(Double.valueOf( decimalFormat.format(balanceOf))));
-               // binding.currentCoins
+                // binding.currentCoins.setText("$"+String.valueOf(Double.valueOf( decimalFormat.format(balanceOf))));
+                // binding.currentCoins
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
 
             }
-        });
+        };
+
+        dbRef.child(auth.getUid()).addValueEventListener(eventListenerForBalance);
+
+      //  dbRef.child(auth.getUid()).removeEventListener(eventListenerForBalance);
 
       /*  binding.paypalEmailBox.addTextChangedListener(new TextWatcher() {
             @Override
@@ -330,4 +337,9 @@ public class WalletFragment extends Fragment {
 
     }
 
+  /*  @Override
+    public void onPause() {
+        super.onPause();
+        //dbRef.child(auth.getUid()).removeEventListener(eventListenerForBalance);
+    }*/
 }

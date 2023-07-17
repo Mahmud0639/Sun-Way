@@ -3,6 +3,7 @@ package com.manuni.sunway;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,6 +25,7 @@ public class TaskViewActivity extends AppCompatActivity {
 
     private String packageNameOfLevel;
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

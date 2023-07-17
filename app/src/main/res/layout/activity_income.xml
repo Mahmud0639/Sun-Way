@@ -15,9 +15,9 @@
             android:id="@+id/productTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
-            android:text="Product to be sell"
             android:layout_marginTop="@dimen/_40mdp"
+            android:fontFamily="cursive"
+            android:text="Product to be sold"
             android:textColor="@color/white"
             android:textSize="@dimen/_34font_mdp"
             app:layout_constraintBottom_toTopOf="@id/viewPageContent"
@@ -38,29 +38,45 @@
             android:id="@+id/viewPageContent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_300mdp"
+            android:layout_marginTop="@dimen/_10mdp"
             app:layout_constraintBottom_toTopOf="@id/nextBtn"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/_10mdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/productTxt"
-            app:layout_constraintVertical_chainStyle="packed"
-            />
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <Button
             android:id="@+id/nextBtn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20mdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/btn_style_go_next"
+            android:drawableEnd="@drawable/next_double_arrow"
+            android:paddingEnd="@dimen/_10mdp"
             android:text="Go Next"
             android:textAllCaps="false"
-            android:drawableEnd="@drawable/next_double_arrow"
-            android:background="@drawable/btn_bg"
-            android:paddingEnd="@dimen/_10mdp"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/viewPageContent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewPageContent" />
+
+        <Button
+            android:id="@+id/previousBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20mdp"
+            android:background="@drawable/btn_style_go_previous"
+            android:drawableStart="@drawable/left_double_arrow"
+            android:paddingStart="@dimen/_10mdp"
+            android:text="Go Previous"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewPageContent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

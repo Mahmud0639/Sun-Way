@@ -1,6 +1,8 @@
 package com.manuni.sunway;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,7 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,14 +34,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private Context context;
     private ArrayList<product_model> list;
-    private DatabaseReference myD;
+    private final DatabaseReference myD;
+    private final DatabaseReference myUserDatabase;
+
+    private ProgressDialog progressDialog,anoProgressDialog;
+
+    ValueEventListener evenForDelete;
 
     private int currentPosition = 0;
+
+    private boolean runV;
 
     public ProductAdapter(Context context, ArrayList<product_model> list) {
         this.context = context;
         this.list = list;
         myD = FirebaseDatabase.getInstance().getReference();
+        myUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        progressDialog = new ProgressDialog(context);
+        //anoProgressDialog = new ProgressDialog(context);
+
     }
 
     @NonNull
@@ -47,8 +63,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return new ProductViewHolder(view);
     }
 
-    int equalPosition;
-    boolean isRunning = false;
+
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -79,14 +94,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });*/
 
-        final boolean[] isStop = {false};
+      //  final boolean[] isStop = {false};
+
+
 
         holder.binding.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Button clicked at position: "+position+" and list size is "+list.size(), Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(context, "Button clicked at position: "+position+" and list size is "+list.size(), Toast.LENGTH_SHORT).show();
 
+                progressDialog.setMessage("Processing sale...");
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
                 if (getItemCount()==1){
+
+                   progressDialog.show();
+
                     myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
                             .child(data.getPackId()).child(data.getProductId())
                             .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -102,7 +125,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                             double dBal = Double.parseDouble(bal);
                                             double dBalOfPack = Double.parseDouble(balanceAsStringOfPack);
 
-                                            double totalBal = dBal + dBalOfPack;
+                                            double resultModified = dBalOfPack - (int) dBalOfPack;
+
+                                            double totalBal = dBal + resultModified;
 
                                             HashMap<String,Object> hashMap = new HashMap<>();
                                             hashMap.put("balance",""+totalBal);
@@ -136,9 +161,49 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                                                                         @Override
                                                                                         public void onSuccess(Void unused) {
 
-                                                                                            //er pore package ti delete diye dite hobe
+                                                                                             evenForDelete = new ValueEventListener() {
+                                                                                                @Override
+                                                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                                                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                                                                                        String pacKey = ""+dataSnapshot.getKey();
+                                                                                                        //Toast.makeText(context, "packKey: "+pacKey, Toast.LENGTH_SHORT).show();
+                                                                                                        myD.child("Users").child(FirebaseAuth.getInstance().getUid())
+                                                                                                                .child("userPackInfo").child(pacKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                                    @Override
+                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                        if (task.isSuccessful()){
+                                                                                                                            myUserDatabase.child(FirebaseAuth.getInstance().getUid()).child("userPackInfo")
+                                                                                                                                    .orderByChild("packId").equalTo(data.getPackId()).removeEventListener(evenForDelete);
+                                                                                                                            /*runV = true;
+                                                                                                                            if (runV){
+                                                                                                                                return;
+                                                                                                                            }*/
+                                                                                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
+                                                                                                                           // ((Activity)context).finish();
+                                                                                                                           progressDialog.dismiss();
+                                                                                                                           // ((Activity) context).finishAffinity();
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                });
 
-                                                                                            Toast.makeText(context, "Deleted successfully.", Toast.LENGTH_SHORT).show();
+
+                                                                                                    }
+                                                                                                }
+
+                                                                                                @Override
+                                                                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                                                                               progressDialog.dismiss();
+                                                                                                }
+                                                                                            };
+
+                                                                                            //er pore package ti delete diye dite hobe
+                                                                                            myUserDatabase.child(FirebaseAuth.getInstance().getUid()).child("userPackInfo")
+                                                                                                    .orderByChild("packId").equalTo(data.getPackId()).addValueEventListener(evenForDelete);
+
+                                                                                           //myUserDatabase.removeEventListener(evenForDelete);
+                                                                                           // Toast.makeText(context, "Datachanged but not updating automatically.", Toast.LENGTH_SHORT).show();
+
+
                                                                                         }
                                                                                     });
                                                                                 }
@@ -257,12 +322,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                 }
                             });
                 }else {
+
+
+                    progressDialog.show();
+
                     myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
                             .child(data.getPackId()).child(data.getProductId())
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                                     String balanceAsStringOfPack = ""+snapshot.child("productSellingPrice").getValue();
+                                   // String perOrderPrice = ""+snapshot.child("perOrder").getValue();
 
                                     myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -272,7 +343,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                             double dBal = Double.parseDouble(bal);
                                             double dBalOfPack = Double.parseDouble(balanceAsStringOfPack);
 
-                                            double totalBal = dBal + dBalOfPack;
+                                           double resultModified = dBalOfPack - (int) dBalOfPack;
+
+                                            double totalBal = dBal + resultModified;
 
                                             HashMap<String,Object> hashMap = new HashMap<>();
                                             hashMap.put("balance",""+totalBal);
@@ -283,8 +356,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                                     myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void unused) {
+                                                            progressDialog.dismiss();
+                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
 
-                                                            Toast.makeText(context, "Deleted successfully.", Toast.LENGTH_SHORT).show();
                                                         }
                                                     });
                                                 }
@@ -294,7 +368,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
-
+                                            progressDialog.dismiss();
                                         }
                                     });
 
@@ -348,7 +422,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-
+                                    progressDialog.dismiss();
                                 }
                             });
                 }
@@ -608,4 +682,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             });
         }*/
     }
+
+
 }

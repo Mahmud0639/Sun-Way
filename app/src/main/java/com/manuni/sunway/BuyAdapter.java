@@ -1,5 +1,6 @@
 package com.manuni.sunway;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -70,7 +71,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
         holder.binding.monthlyIncomeTxt.setText(String.format("$%.2f", monthlyPackDouble));
 
 
-        holder.binding.takeDollarBtn.setText(String.format("Take $%.2f", perOrderDouble));
+        holder.binding.takeDollarBtn.setText(String.format("Sell and Earn $%.2f", perOrderDouble));
 
       /*  DatabaseReference myDB = FirebaseDatabase.getInstance().getReference().child("Users");
         myDB.child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -130,7 +131,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                                         holder.binding.takeDollarBtn.setText("Taken");
                                     } else if (taskS.equals("false")) {
                                         holder.binding.takeDollarBtn.setEnabled(true);
-                                        holder.binding.takeDollarBtn.setText(String.format("Take $%.2f", perOrderDouble));
+                                        holder.binding.takeDollarBtn.setText(String.format("Sell and Earn $%.2f", perOrderDouble));
                                     }
                                 }
 
@@ -163,6 +164,8 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.BuyViewHolder> {
                 Intent incomeIntent = new Intent(context,IncomeActivity.class);
                 incomeIntent.putExtra("packKey",""+packId);
                 context.startActivity(incomeIntent);
+                holder.binding.myProgress.setVisibility(View.INVISIBLE);
+
 
 /*
                 DatabaseReference myDatabase = FirebaseDatabase.getInstance().getReference().child("Users");

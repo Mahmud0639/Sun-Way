@@ -49,8 +49,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".PayToJoinActivity"
+            android:parentActivityName=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".TaskViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"

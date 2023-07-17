@@ -1,10 +1,12 @@
 package com.manuni.sunway;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.manuni.sunway.databinding.ActivityPayToJoinBinding;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class PayToJoinActivity extends AppCompatActivity {
     ActivityPayToJoinBinding binding;
@@ -67,6 +70,8 @@ public class PayToJoinActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                binding.submitBtn.setEnabled(false);
+
                 String accountNumberTRC = binding.accountNumberET.getText().toString().trim();
 
                 if (TextUtils.isEmpty(accountNumberTRC)){
@@ -90,14 +95,15 @@ public class PayToJoinActivity extends AppCompatActivity {
                     hashMap.put("accountNumber",""+accountNumberTRC);
                     hashMap.put("userId",""+auth.getUid());
 
-                    databaseReference.child(auth.getUid()).child("userPackInfo").child(myKey).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    assert myKey != null;
+                    databaseReference.child(Objects.requireNonNull(auth.getUid())).child("userPackInfo").child(myKey).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             progressDialog.dismiss();
                             DatabaseReference myD = FirebaseDatabase.getInstance().getReference().child("Users");
                             myD.child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onDataChange(DataSnapshot snapshot) {
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     String totalOf = ""+snapshot.child("totalCount").getValue();
                                     int myTotalInt = Integer.parseInt(totalOf);
 
@@ -109,7 +115,7 @@ public class PayToJoinActivity extends AppCompatActivity {
                                     myD.child(auth.getUid()).updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            Toast.makeText(PayToJoinActivity.this, "Added one value to totalCount child.", Toast.LENGTH_SHORT).show();
+                                           // Toast.makeText(PayToJoinActivity.this, "Added one value to totalCount child.", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }

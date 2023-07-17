@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
@@ -130,12 +131,15 @@ public class HomeFragment extends Fragment {
 
 
     }
+    DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("PackageInfo");
+    ValueEventListener eventListenerForPack;
 
     private void loadTaskPack() {
        // binding.progressBar.setVisibility(View.VISIBLE);
         list = new ArrayList<>();
-        DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("PackageInfo");
-        taskRef.addValueEventListener(new ValueEventListener() {
+
+
+         eventListenerForPack = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -153,7 +157,7 @@ public class HomeFragment extends Fragment {
                     binding.workPackRV.setAdapter(taskAdapter);
                     taskAdapter.notifyDataSetChanged();
                     binding.workPackRV.setHasFixedSize(true);
-                   // binding.progressBar.setVisibility(View.GONE);
+                    // binding.progressBar.setVisibility(View.GONE);
 
                     binding.shimmerViewContainer.stopShimmer();
                     binding.shimmerViewLayout.setVisibility(View.GONE);
@@ -165,7 +169,13 @@ public class HomeFragment extends Fragment {
             public void onCancelled(DatabaseError error) {
 
             }
-        });
+        };
+
+
+
+        taskRef.addValueEventListener(eventListenerForPack);
+
+
 
     }
 
@@ -173,11 +183,15 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         binding.shimmerViewContainer.stopShimmer();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         binding.shimmerViewContainer.startShimmer();
+
     }
+
+
 }
