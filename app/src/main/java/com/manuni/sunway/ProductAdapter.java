@@ -1,10 +1,13 @@
 package com.manuni.sunway;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +45,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     ValueEventListener evenForDelete;
 
     private int currentPosition = 0;
+
+    private static final String PREFS_NAME = "TaskPrefs";
+    private static final String LAST_COMPLETION_TIME_KEY = "lastCompletionTime";
 
     private boolean runV;
 
@@ -101,113 +107,134 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.binding.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Toast.makeText(context, "Button clicked at position: "+position+" and list size is "+list.size(), Toast.LENGTH_SHORT).show();
 
-                progressDialog.setMessage("Processing sale...");
-                progressDialog.setCancelable(false);
-                progressDialog.setCanceledOnTouchOutside(false);
-                if (getItemCount()==1){
+                holder.binding.card.animate()
+                        .alpha(0)
+                        .setDuration(1500)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                // Handle button click logic after the animation ends
+                                // Your existing code here
 
-                   progressDialog.show();
 
-                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
-                            .child(data.getPackId()).child(data.getProductId())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    String balanceAsStringOfPack = ""+snapshot.child("productSellingPrice").getValue();
+                                progressDialog.setMessage("Processing sale...");
+                                progressDialog.setCancelable(false);
+                                progressDialog.setCanceledOnTouchOutside(false);
+                                if (getItemCount()==1){
 
-                                    myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            String bal = ""+snapshot.child("balance").getValue();
+                                    progressDialog.show();
 
-                                            double dBal = Double.parseDouble(bal);
-                                            double dBalOfPack = Double.parseDouble(balanceAsStringOfPack);
-
-                                            double resultModified = dBalOfPack - (int) dBalOfPack;
-
-                                            double totalBal = dBal + resultModified;
-
-                                            HashMap<String,Object> hashMap = new HashMap<>();
-                                            hashMap.put("balance",""+totalBal);
-
-                                            myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
+                                            .child(data.getPackId()).child(data.getProductId())
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
-                                                public void onSuccess(Void unused) {
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    String balanceAsStringOfPack = ""+snapshot.child("productSellingPrice").getValue();
 
                                                     myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            String bal = ""+snapshot.child("balance").getValue();
 
-                                                            String myBalance = ""+snapshot.child("balance").getValue();
-                                                            double dMyBalance = Double.parseDouble(myBalance);
+                                                            double dBal = Double.parseDouble(bal);
+                                                            double dBalOfPack = Double.parseDouble(balanceAsStringOfPack);
 
-                                                            HashMap<String,Object> hashMap1 = new HashMap<>();
-                                                            hashMap1.put("balance",""+myBalance);
+                                                            double resultModified = dBalOfPack - (int) dBalOfPack;
 
-                                                            myD.child("Users").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            double totalBal = dBal + resultModified;
+
+                                                            HashMap<String,Object> hashMap = new HashMap<>();
+                                                            hashMap.put("balance",""+totalBal);
+
+                                                            myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
 
-                                                                    HashMap<String,Object> hashMap2 = new HashMap<>();
-                                                                    hashMap2.put("balance",dMyBalance);
-                                                                    FirebaseFirestore.getInstance().collection("users")
-                                                                                    .document(FirebaseAuth.getInstance().getUid())
-                                                                                            .update(hashMap2).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                                            String myBalance = ""+snapshot.child("balance").getValue();
+                                                                            double dMyBalance = Double.parseDouble(myBalance);
+
+                                                                            HashMap<String,Object> hashMap1 = new HashMap<>();
+                                                                            hashMap1.put("balance",""+myBalance);
+
+                                                                            myD.child("Users").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                 @Override
                                                                                 public void onSuccess(Void unused) {
-                                                                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                        @Override
-                                                                                        public void onSuccess(Void unused) {
 
-                                                                                             evenForDelete = new ValueEventListener() {
+                                                                                    HashMap<String,Object> hashMap2 = new HashMap<>();
+                                                                                    hashMap2.put("balance",dMyBalance);
+                                                                                    FirebaseFirestore.getInstance().collection("users")
+                                                                                            .document(FirebaseAuth.getInstance().getUid())
+                                                                                            .update(hashMap2).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                 @Override
-                                                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                                                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                                                                                                        String pacKey = ""+dataSnapshot.getKey();
-                                                                                                        //Toast.makeText(context, "packKey: "+pacKey, Toast.LENGTH_SHORT).show();
-                                                                                                        myD.child("Users").child(FirebaseAuth.getInstance().getUid())
-                                                                                                                .child("userPackInfo").child(pacKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                                                    @Override
-                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                        if (task.isSuccessful()){
-                                                                                                                            myUserDatabase.child(FirebaseAuth.getInstance().getUid()).child("userPackInfo")
-                                                                                                                                    .orderByChild("packId").equalTo(data.getPackId()).removeEventListener(evenForDelete);
+                                                                                                public void onSuccess(Void unused) {
+                                                                                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onSuccess(Void unused) {
+
+                                                                                                            evenForDelete = new ValueEventListener() {
+                                                                                                                @Override
+                                                                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                                                                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                                                                                                        String pacKey = ""+dataSnapshot.getKey();
+                                                                                                                        //Toast.makeText(context, "packKey: "+pacKey, Toast.LENGTH_SHORT).show();
+                                                                                                                        myD.child("Users").child(FirebaseAuth.getInstance().getUid())
+                                                                                                                                .child("userPackInfo").child(pacKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                                                    @Override
+                                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                        if (task.isSuccessful()){
+                                                                                                                                            myUserDatabase.child(FirebaseAuth.getInstance().getUid()).child("userPackInfo")
+                                                                                                                                                    .orderByChild("packId").equalTo(data.getPackId()).removeEventListener(evenForDelete);
                                                                                                                             /*runV = true;
                                                                                                                             if (runV){
                                                                                                                                 return;
                                                                                                                             }*/
-                                                                                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
-                                                                                                                           // ((Activity)context).finish();
-                                                                                                                           progressDialog.dismiss();
-                                                                                                                           // ((Activity) context).finishAffinity();
-                                                                                                                        }
+                                                                                                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
+                                                                                                                                            // ((Activity)context).finish();
+                                                                                                                                            progressDialog.dismiss();
+                                                                                                                                            // ((Activity) context).finishAffinity();
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                });
+
+
                                                                                                                     }
-                                                                                                                });
+                                                                                                                }
+
+                                                                                                                @Override
+                                                                                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                                                                                    progressDialog.dismiss();
+                                                                                                                }
+                                                                                                            };
+
+                                                                                                          /*  //er pore package ti delete diye dite hobe
+                                                                                                            myUserDatabase.child(FirebaseAuth.getInstance().getUid()).child("userPackInfo")
+                                                                                                                    .orderByChild("packId").equalTo(data.getPackId()).addValueEventListener(evenForDelete);*/
+
+                                                                                                            //myUserDatabase.removeEventListener(evenForDelete);
+                                                                                                            // Toast.makeText(context, "Datachanged but not updating automatically.", Toast.LENGTH_SHORT).show();
 
 
-                                                                                                    }
+                                                                                                        }
+                                                                                                    });
                                                                                                 }
-
-                                                                                                @Override
-                                                                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                                                                               progressDialog.dismiss();
-                                                                                                }
-                                                                                            };
-
-                                                                                            //er pore package ti delete diye dite hobe
-                                                                                            myUserDatabase.child(FirebaseAuth.getInstance().getUid()).child("userPackInfo")
-                                                                                                    .orderByChild("packId").equalTo(data.getPackId()).addValueEventListener(evenForDelete);
-
-                                                                                           //myUserDatabase.removeEventListener(evenForDelete);
-                                                                                           // Toast.makeText(context, "Datachanged but not updating automatically.", Toast.LENGTH_SHORT).show();
+                                                                                            });
 
 
-                                                                                        }
-                                                                                    });
                                                                                 }
                                                                             });
+
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                        }
+                                                                    });
 
 
                                                                 }
@@ -223,299 +250,82 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
 
                                                 }
-                                            });
 
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-
-                                   /* myD.child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            String balanceAsString = ""+snapshot.child("balance").getValue();
-                                            double dBalanceAsStringOfPack = Double.parseDouble(balanceAsStringOfPack);
-                                            double dBalanceAsString = Double.parseDouble(balanceAsString);
-
-                                            double totalDoubleBalance = dBalanceAsStringOfPack + dBalanceAsString;
-
-                                            HashMap<String,Object> hashMap = new HashMap<>();
-                                            hashMap.put("balance",""+totalDoubleBalance);
-
-
-                                            myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
-                                                public void onSuccess(Void unused) {
-                                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+                                }else {
+
+
+                                    progressDialog.show();
+
+                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
+                                            .child(data.getPackId()).child(data.getProductId())
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                    String balanceAsStringOfPack = ""+snapshot.child("productSellingPrice").getValue();
+                                                    // String perOrderPrice = ""+snapshot.child("perOrder").getValue();
+
+                                                    myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
-                                                        public void onSuccess(Void unused) {
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            String bal = ""+snapshot.child("balance").getValue();
 
-                                                            myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            double dBal = Double.parseDouble(bal);
+                                                            double dBalOfPack = Double.parseDouble(balanceAsStringOfPack);
+
+                                                            double resultModified = dBalOfPack - (int) dBalOfPack;
+
+                                                            double totalBal = dBal + resultModified;
+
+                                                            HashMap<String,Object> hashMap = new HashMap<>();
+                                                            hashMap.put("balance",""+totalBal);
+
+                                                            myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
-                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                    String myBalance = ""+snapshot.child("balance").getValue();
+                                                                public void onSuccess(Void unused) {
+                                                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void unused) {
+                                                                            progressDialog.dismiss();
+                                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
 
-                                                                    HashMap<String,Object> hashMap1 = new HashMap<>();
-                                                                    hashMap1.put("balance",""+myBalance);
-
-                                                                    myD.child("Users").child(FirebaseAuth.getInstance().getUid())
-                                                                            .updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                @Override
-                                                                                public void onSuccess(Void unused) {
-                                                                                    FirebaseFirestore.getInstance().collection("users")
-                                                                                            .document(FirebaseAuth.getInstance().getUid())
-                                                                                            .update(hashMap1)
-                                                                                           .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                @Override
-                                                                                                public void onSuccess(Void unused) {
-
-                                                                                                }
-                                                                                            });
-                                                                                }
-                                                                            });
-                                                                }
-
-                                                                @Override
-                                                                public void onCancelled(@NonNull DatabaseError error) {
-
+                                                                            //after this we should store all the info of 24 hours task
+                                                                            //PREFS_NAME = ""+totalBal;
+                                                                            saveLastCompletionTime(context);
+                                                                        }
+                                                                    });
                                                                 }
                                                             });
 
-
-
-
-                                                            Toast.makeText(context, "Deleted successfully.", Toast.LENGTH_SHORT).show();
                                                         }
-                                                    });
-                                                }
-                                            });
 
-                                           *//* myD.child("Users").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    Toast.makeText(context, "Balance added to temporary node.", Toast.LENGTH_SHORT).show();
-
-
-
-
-
-                                                }
-                                            });*//*
-
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });*/
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                }else {
-
-
-                    progressDialog.show();
-
-                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
-                            .child(data.getPackId()).child(data.getProductId())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                    String balanceAsStringOfPack = ""+snapshot.child("productSellingPrice").getValue();
-                                   // String perOrderPrice = ""+snapshot.child("perOrder").getValue();
-
-                                    myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            String bal = ""+snapshot.child("balance").getValue();
-
-                                            double dBal = Double.parseDouble(bal);
-                                            double dBalOfPack = Double.parseDouble(balanceAsStringOfPack);
-
-                                           double resultModified = dBalOfPack - (int) dBalOfPack;
-
-                                            double totalBal = dBal + resultModified;
-
-                                            HashMap<String,Object> hashMap = new HashMap<>();
-                                            hashMap.put("balance",""+totalBal);
-
-                                            myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
-                                                        public void onSuccess(Void unused) {
+                                                        public void onCancelled(@NonNull DatabaseError error) {
                                                             progressDialog.dismiss();
-                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
-
                                                         }
                                                     });
+
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                    progressDialog.dismiss();
                                                 }
                                             });
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-
-                                  /*  myD.child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                                            String balanceAsString = ""+snapshot.child("balance").getValue();
-                                            double dBalanceAsStringOfPack = Double.parseDouble(balanceAsStringOfPack);
-                                            double dBalanceAsString = Double.parseDouble(balanceAsString);
-
-                                            double totalDoubleBalance = dBalanceAsStringOfPack + dBalanceAsString;
-                                            double ultimateTotal = totalDoubleBalance + dBalanceAsStringOfPack;
-
-                                            Toast.makeText(context, "Total balance is: "+totalDoubleBalance, Toast.LENGTH_SHORT).show();
-
-                                            HashMap<String,Object> hashMap = new HashMap<>();
-                                            hashMap.put("balance",""+totalDoubleBalance);
-
-
-
-
-                                         *//*   myD.child("Users").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    Toast.makeText(context, "Balance added to temporary node.", Toast.LENGTH_SHORT).show();
-
-
-                                                 *//**//*   FirebaseFirestore.getInstance().collection("users")
-                                                            .document(FirebaseAuth.getInstance().getUid())
-                                                            .update("balance", FieldValue.increment(dBalanceAsStringOfPack)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void unused) {
-
-                                                                }
-                                                            });*//**//*
-                                                }
-                                            });*//*
-
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });*/
-
                                 }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    progressDialog.dismiss();
-                                }
-                            });
-                }
+                            }
+                        });
+
+              //  Toast.makeText(context, "Button clicked at position: "+position+" and list size is "+list.size(), Toast.LENGTH_SHORT).show();
 
 
-
-            /*  if (position==9){
-                    Toast.makeText(context, "Please take the task now.", Toast.LENGTH_SHORT).show();
-                }else {
-                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
-                            .child(data.getPackId()).child(data.getProductId())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    String balanceAsStringOfPack = ""+snapshot.child("productSellingPrice").getValue();
-                                    myD.child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            String balanceAsString = ""+snapshot.child("balance").getValue();
-                                            double dBalanceAsStringOfPack = Double.parseDouble(balanceAsStringOfPack);
-                                            double dBalanceAsString = Double.parseDouble(balanceAsString);
-
-                                            double totalDoubleBalance = dBalanceAsStringOfPack + dBalanceAsString;
-
-                                            HashMap<String,Object> hashMap = new HashMap<>();
-                                            hashMap.put("balance",""+totalDoubleBalance);
-
-
-                                            myD.child("UsersTemporaryBalance").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void unused) {
-
-                                                            Toast.makeText(context, "Deleted successfully.", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
-                                                }
-                                            });
-
-                                              myD.child("Users").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void unused) {
-                                                        Toast.makeText(context, "Balance added to temporary node.", Toast.LENGTH_SHORT).show();
-
-
-                                                      FirebaseFirestore.getInstance().collection("users")
-                                                                .document(FirebaseAuth.getInstance().getUid())
-                                                                .update("balance", FieldValue.increment(dBalanceAsStringOfPack)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void unused) {
-
-                                                                    }
-                                                                });
-                                                    }
-                                                });
-
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                }*/
-
-
-
-
-              /*  HashMap<String,Object> hashMap = new HashMap<>();
-                hashMap.put("sellingStatus","true");*/
-
-               /* myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        holder.binding.confirm.setEnabled(false);
-                        holder.binding.levelName.setText("Sold");
-
-
-
-                       // makeButtonDisabled(holder,data);
-                    }
-                });*/
             }
         });
 
@@ -681,6 +491,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 }
             });
         }*/
+    }
+    public static String getPrefsName(){
+        return PREFS_NAME;
+    }
+    public static String getLastCompletionTimeKey(){
+        return LAST_COMPLETION_TIME_KEY;
+    }
+
+    public static void saveLastCompletionTime(Context context) {
+
+      //  Toast.makeText(context, "Pref Name is : "+PREFS_NAME, Toast.LENGTH_SHORT).show();
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        long currentTimeMillis = System.currentTimeMillis();
+        editor.putLong(LAST_COMPLETION_TIME_KEY, currentTimeMillis);
+        editor.apply();
     }
 
 

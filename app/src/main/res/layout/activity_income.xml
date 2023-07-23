@@ -34,6 +34,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />-->
+
+        <TextView
+            android:id="@+id/againEarnTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Please wait 24 hours for again earning"
+            app:layout_constraintTop_toTopOf="@id/viewPageContent"
+            app:layout_constraintStart_toStartOf="@id/viewPageContent"
+            app:layout_constraintEnd_toEndOf="@id/viewPageContent"
+            app:layout_constraintBottom_toBottomOf="@id/viewPageContent"
+            android:textSize="@dimen/_25font_mdp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPageContent"
             android:layout_width="match_parent"
