@@ -4,14 +4,15 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.manuni.sunway"
         minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        //noinspection EditedTargetSdkVersion
+        targetSdk 33
+        versionCode 6
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

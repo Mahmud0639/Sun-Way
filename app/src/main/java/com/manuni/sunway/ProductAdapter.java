@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,12 +31,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.manuni.sunway.databinding.BuyProductIncomeBinding;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Objects;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{
 
-    private Context context;
+    private static Context context;
     private ArrayList<product_model> list;
     private final DatabaseReference myD;
     private final DatabaseReference myUserDatabase;
@@ -47,6 +53,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private int currentPosition = 0;
 
     private static final String PREFS_NAME = "TaskPrefs";
+    private static final String PREFS_NAME_NEW = "MyPrefs";
+    private static final String LAST_COMPLETION_DATE_KEY = "lastCompletionDate";
     private static final String LAST_COMPLETION_TIME_KEY = "lastCompletionTime";
 
     private boolean runV;
@@ -58,6 +66,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         myUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
         progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Processing sale...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         //anoProgressDialog = new ProgressDialog(context);
 
     }
@@ -118,9 +129,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                 // Your existing code here
 
 
-                                progressDialog.setMessage("Processing sale...");
-                                progressDialog.setCancelable(false);
-                                progressDialog.setCanceledOnTouchOutside(false);
+
                                 if (getItemCount()==1){
 
                                     progressDialog.show();
@@ -175,7 +184,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                                                                                     myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                         @Override
                                                                                                         public void onSuccess(Void unused) {
-
+                                                                                                                progressDialog.dismiss();
                                                                                                             evenForDelete = new ValueEventListener() {
                                                                                                                 @Override
                                                                                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -195,8 +204,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                                                                                                             }*/
                                                                                                                                             Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
                                                                                                                                             // ((Activity)context).finish();
-                                                                                                                                            progressDialog.dismiss();
+
                                                                                                                                             // ((Activity) context).finishAffinity();
+                                                                                                                                            progressDialog.dismiss();
+
+                                                                                                                                            saveLastCompletionTime(context);
+
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 });
@@ -232,7 +245,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                                                         @Override
                                                                         public void onCancelled(@NonNull DatabaseError error) {
-
+                                                                            progressDialog.dismiss();
                                                                         }
                                                                     });
 
@@ -244,7 +257,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                                         @Override
                                                         public void onCancelled(@NonNull DatabaseError error) {
-
+                                                                progressDialog.dismiss();
                                                         }
                                                     });
 
@@ -253,13 +266,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                                 @Override
                                                 public void onCancelled(@NonNull DatabaseError error) {
+                                                    progressDialog.dismiss();
 
                                                 }
                                             });
                                 }else {
 
-
                                     progressDialog.show();
+
 
                                     myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
                                             .child(data.getPackId()).child(data.getProductId())
@@ -291,12 +305,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                                                     myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                         @Override
                                                                         public void onSuccess(Void unused) {
-                                                                            progressDialog.dismiss();
-                                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
 
+                                                                            Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
+                                                                            progressDialog.dismiss();
                                                                             //after this we should store all the info of 24 hours task
                                                                             //PREFS_NAME = ""+totalBal;
-                                                                            saveLastCompletionTime(context);
+                                                                           /* saveLastCompletionTime(context);
+                                                                          saveLastCompletionTimeToDatabase();*/
+                                                                            saveLastCompletionTimeToDatabase();
+
                                                                         }
                                                                     });
                                                                 }
@@ -493,21 +510,64 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }*/
     }
     public static String getPrefsName(){
-        return PREFS_NAME;
+        //return PREFS_NAME;
+        return PREFS_NAME_NEW;
     }
     public static String getLastCompletionTimeKey(){
-        return LAST_COMPLETION_TIME_KEY;
+       // return LAST_COMPLETION_TIME_KEY;
+        return LAST_COMPLETION_DATE_KEY;
     }
 
     public static void saveLastCompletionTime(Context context) {
 
       //  Toast.makeText(context, "Pref Name is : "+PREFS_NAME, Toast.LENGTH_SHORT).show();
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+       /* SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         long currentTimeMillis = System.currentTimeMillis();
         editor.putLong(LAST_COMPLETION_TIME_KEY, currentTimeMillis);
+        editor.apply();*/
+
+        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME_NEW,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        //Toast.makeText(context, "The last time is: "+sp.getString(PREFS_NAME_NEW,""), Toast.LENGTH_SHORT).show();
+
+        String currentDate = getCurrentDate();
+
+        editor.putString(LAST_COMPLETION_DATE_KEY,currentDate);
         editor.apply();
+        Toast.makeText(context, "Time has saved successfully!", Toast.LENGTH_SHORT).show();
+        //saveLastCompletionTimeToDatabase();
+    }
+
+    private static String getCurrentDate(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date currentDate = Calendar.getInstance().getTime();
+        return simpleDateFormat.format(currentDate);
+
+    }
+    private void saveLastCompletionTimeToDatabase(){
+        progressDialog.setMessage("Updating your time...");
+
+        HashMap<String,Object> hm = new HashMap<>();
+        String currentDate = getCurrentDate();
+        hm.put("lastCompletionTime",""+currentDate);
+        DatabaseReference myD = FirebaseDatabase.getInstance().getReference();
+        myD.child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).updateChildren(hm)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+               progressDialog.dismiss();
+               // Toast.makeText(context, "You will be able to income again after midnight", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+progressDialog.dismiss();
+            }
+        });
     }
 
 

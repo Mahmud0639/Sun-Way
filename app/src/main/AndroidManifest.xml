@@ -3,10 +3,10 @@
     package="com.manuni.sunway">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.AC
-    CESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
         android:name=".MyApplication"
@@ -20,10 +20,13 @@
         android:theme="@style/Theme.SunWay"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
             android:name=".IncomeActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:exported="false"
-            android:theme="@style/Theme.SunWay.NoActionBar"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+            android:theme="@style/Theme.SunWay.NoActionBar" />
         <activity
             android:name=".NoInternetActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
@@ -50,10 +53,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".PayToJoinActivity"
-            android:parentActivityName=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:exported="false"
-            android:windowSoftInputMode="stateHidden"/>
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".TaskViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"

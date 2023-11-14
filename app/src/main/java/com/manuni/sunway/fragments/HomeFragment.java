@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.manuni.sunway.FeedbackActivity;
 import com.manuni.sunway.PackageModel;
 import com.manuni.sunway.R;
 import com.manuni.sunway.ReferCodeActivity;
@@ -74,6 +75,7 @@ public class HomeFragment extends Fragment {
 
         PopupMenu popupMenu = new PopupMenu(getContext(),binding.moreBtn);
         popupMenu.getMenu().add("Refer Code");
+        popupMenu.getMenu().add("Feedback");
         popupMenu.getMenu().add("Logout");
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -86,7 +88,10 @@ public class HomeFragment extends Fragment {
                     getActivity().finish();
                 }else if (item.getTitle()=="Refer Code"){
                     startActivity(new Intent(getContext(), ReferCodeActivity.class));
+                }else if (item.getTitle()=="Feedback"){
+                    startActivity(new Intent(getContext(), FeedbackActivity.class));
                 }
+
 
                 return true;
             }

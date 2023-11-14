@@ -39,16 +39,91 @@
             android:id="@+id/againEarnTxt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Please wait 24 hours for again earning"
-            app:layout_constraintTop_toTopOf="@id/viewPageContent"
-            app:layout_constraintStart_toStartOf="@id/viewPageContent"
-            app:layout_constraintEnd_toEndOf="@id/viewPageContent"
-            app:layout_constraintBottom_toBottomOf="@id/viewPageContent"
-            android:textSize="@dimen/_25font_mdp"
-            android:visibility="gone"
             android:gravity="center"
+            android:text="Task will be appeared after today midnight 12:00 AM"
             android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/_22font_mdp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/viewPageContent"
+            app:layout_constraintEnd_toEndOf="@id/viewPageContent"
+            app:layout_constraintStart_toStartOf="@id/viewPageContent"
+            app:layout_constraintTop_toTopOf="@id/viewPageContent" />
+
+        <TextView
+            android:id="@+id/hourTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_20mdp"
+            android:text="00"
+            android:visibility="gone"
+            android:textColor="#FF9800"
+            android:textSize="@dimen/_20font_mdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/againEarnTxt"
+            app:layout_constraintEnd_toStartOf="@id/dotTime"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/dotTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5mdp"
+            android:text=":"
+            android:visibility="gone"
+            android:textColor="#ff22"
+            android:textSize="@dimen/_20font_mdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/hourTime"
+            app:layout_constraintEnd_toStartOf="@id/minuteTime"
+            app:layout_constraintStart_toEndOf="@id/hourTime"
+            app:layout_constraintTop_toTopOf="@id/hourTime" />
+
+        <TextView
+            android:id="@+id/minuteTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5mdp"
+            android:text="00"
+            android:visibility="gone"
+            android:textColor="#FF9800"
+            android:textSize="@dimen/_20font_mdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/dotTime"
+            app:layout_constraintEnd_toStartOf="@id/dotTimeSecond"
+            app:layout_constraintStart_toEndOf="@id/dotTime"
+            app:layout_constraintTop_toTopOf="@id/dotTime" />
+
+        <TextView
+            android:id="@+id/dotTimeSecond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5mdp"
+            android:text=":"
+            android:textColor="#ff22"
+            android:textSize="@dimen/_20font_mdp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/hourTime"
+            app:layout_constraintEnd_toStartOf="@id/secondTime"
+            app:layout_constraintStart_toEndOf="@id/minuteTime"
+            app:layout_constraintTop_toTopOf="@id/hourTime" />
+
+        <TextView
+            android:id="@+id/secondTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5mdp"
+            android:text="00"
+            android:textColor="#FF9800"
+            android:textSize="@dimen/_20font_mdp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/dotTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dotTimeSecond"
+            app:layout_constraintTop_toTopOf="@id/dotTime" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPageContent"
