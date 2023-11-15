@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.list = list;
         myD = FirebaseDatabase.getInstance().getReference();
         myUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        //SharedPreferences sp = context.getSharedPreferences(PREFS_NAME_NEW+pacKey,Context.MODE_PRIVATE);
 
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Processing sale...");
@@ -208,7 +211,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                                                                                                                             // ((Activity) context).finishAffinity();
                                                                                                                                             progressDialog.dismiss();
 
-                                                                                                                                            saveLastCompletionTime(context);
+
+                                                                                                                                           // Toast.makeText(context, "Pack Id is: "+data.getPackId(), Toast.LENGTH_SHORT).show();
+
 
                                                                                                                                         }
                                                                                                                                     }
@@ -275,6 +280,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                     progressDialog.show();
 
 
+
                                     myD.child("SpecificUsersIncomePack").child(FirebaseAuth.getInstance().getUid())
                                             .child(data.getPackId()).child(data.getProductId())
                                             .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -308,11 +314,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                                                             Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
                                                                             progressDialog.dismiss();
+                                                                            Toast.makeText(context, "Pack Id is: "+data.getPackId(), Toast.LENGTH_SHORT).show();
                                                                             //after this we should store all the info of 24 hours task
                                                                             //PREFS_NAME = ""+totalBal;
                                                                            /* saveLastCompletionTime(context);
                                                                           saveLastCompletionTimeToDatabase();*/
-                                                                            saveLastCompletionTimeToDatabase();
+                                                                            //saveLastCompletionTimeToDatabase();
+                                                                            saveLastCompletionTime(context,data.getPackId());
 
                                                                         }
                                                                     });
@@ -517,8 +525,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
        // return LAST_COMPLETION_TIME_KEY;
         return LAST_COMPLETION_DATE_KEY;
     }
+  /*  public static String getPackKey(){
 
-    public static void saveLastCompletionTime(Context context) {
+    }*/
+
+    public static void saveLastCompletionTime(Context context,String pack) {
+        Toast.makeText(context, "My packKey is: "+pack, Toast.LENGTH_SHORT).show();
 
       //  Toast.makeText(context, "Pref Name is : "+PREFS_NAME, Toast.LENGTH_SHORT).show();
 
@@ -528,14 +540,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         editor.putLong(LAST_COMPLETION_TIME_KEY, currentTimeMillis);
         editor.apply();*/
 
-        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME_NEW,Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME_NEW+pack,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
         //Toast.makeText(context, "The last time is: "+sp.getString(PREFS_NAME_NEW,""), Toast.LENGTH_SHORT).show();
+        //Log.d("MyTag", "saveLastCompletionTime: "+sp.getString(PREFS_NAME_NEW+pack,""));
+
 
         String currentDate = getCurrentDate();
 
-        editor.putString(LAST_COMPLETION_DATE_KEY,currentDate);
+        editor.putString(LAST_COMPLETION_DATE_KEY+pack,currentDate);
+
+        //Log.d("MyTag", "saveLastCompletionTime: "+sp.getString(LAST_COMPLETION_DATE_KEY+pack,""));
         editor.apply();
         Toast.makeText(context, "Time has saved successfully!", Toast.LENGTH_SHORT).show();
         //saveLastCompletionTimeToDatabase();

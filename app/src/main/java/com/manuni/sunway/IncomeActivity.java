@@ -41,6 +41,7 @@ public class IncomeActivity extends AppCompatActivity {
     private ProgressDialog dialog;
 
     private String packKey;
+    private static String myPack;
     private DatabaseReference myDB;
 
     private FirebaseAuth auth;
@@ -64,6 +65,9 @@ public class IncomeActivity extends AppCompatActivity {
         dialog.show();
 
         packKey = getIntent().getStringExtra("packKey");
+        myPack = packKey;
+        Toast.makeText(this, "Income activity packKey is: "+packKey, Toast.LENGTH_SHORT).show();
+
 
         list = new ArrayList<>();
 
@@ -358,7 +362,7 @@ public class IncomeActivity extends AppCompatActivity {
             return false;
         }*/
 
-        final String[] lastCompletionTime = {getLastCompletionTime(this)};
+       /* final String[] lastCompletionTime = {getLastCompletionTime(this)};
         if (lastCompletionTime[0].equals("")){
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
             dbRef.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -377,22 +381,26 @@ public class IncomeActivity extends AppCompatActivity {
             });
         }else {
             lastCompletionTime[0] = getLastCompletionTime(this);
-        }
-        //String lastCompletionDate = getLastCompletionTime(this);
+        }*/
+        String lastCompletionDate = getLastCompletionTime(this,packKey);
         String currentDate = getCurrentDate();
 
-        if (!lastCompletionTime[0].equals(currentDate)){
-            SharedPreferences sp = getSharedPreferences(ProductAdapter.getPrefsName(),Context.MODE_PRIVATE);
+        Toast.makeText(this, "At last : "+packKey, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Last completion Date: "+lastCompletionDate, Toast.LENGTH_SHORT).show();
+
+        if (!lastCompletionDate.equals(currentDate)){
+           /*SharedPreferences sp = getSharedPreferences(ProductAdapter.getPrefsName()+packKey,Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString(ProductAdapter.getLastCompletionTimeKey(),currentDate);
-            editor.apply();
+            editor.putString(ProductAdapter.getLastCompletionTimeKey()+packKey,currentDate);
+            editor.apply();*/
 
-            saveLastCompletionTimeToDatabase();
+           // saveLastCompletionTimeToDatabase();*/
 
-
+            Toast.makeText(this, "At last packKey is: "+packKey, Toast.LENGTH_SHORT).show();
 
             return true;
         }else {
+            Toast.makeText(this, "At last packKey is: "+packKey, Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -414,10 +422,10 @@ public class IncomeActivity extends AppCompatActivity {
         return (currentTimeMillis - lastCompletionTimeMillis) >= (midnightMillis - lastCompletionTimeMillis);
     }*/
 
-    public static String getLastCompletionTime(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(ProductAdapter.getPrefsName(), Context.MODE_PRIVATE);
+    public static String getLastCompletionTime(Context context,String packL) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(ProductAdapter.getPrefsName()+packL, Context.MODE_PRIVATE);
         //return sharedPreferences.getLong(ProductAdapter.getLastCompletionTimeKey(), 0);
-        return sharedPreferences.getString(ProductAdapter.getLastCompletionTimeKey(),"");
+        return sharedPreferences.getString(ProductAdapter.getLastCompletionTimeKey()+packL,"");
     }
 
    /* private static long getMidnightMillis(long currentTimeMillis) {
