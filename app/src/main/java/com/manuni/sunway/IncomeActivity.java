@@ -71,6 +71,9 @@ public class IncomeActivity extends AppCompatActivity {
 
         list = new ArrayList<>();
 
+
+        //toKnowDateDatabase();
+
         ObjectAnimator fadeOutAnimator = ObjectAnimator.ofFloat(binding.viewPageContent, "alpha", 1f, 0f);
         fadeOutAnimator.setDuration(500); // Animation duration in milliseconds
 
@@ -361,16 +364,35 @@ public class IncomeActivity extends AppCompatActivity {
             Toast.makeText(this, "24 hours have not passed since the last completion.", Toast.LENGTH_SHORT).show();
             return false;
         }*/
+        final String[] dbTime = {""};
 
-       /* final String[] lastCompletionTime = {getLastCompletionTime(this)};
+        final String[] lastCompletionTime = {getLastCompletionTime(this,packKey)};
         if (lastCompletionTime[0].equals("")){
-            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
-            dbRef.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            Toast.makeText(this, "Yes last completion time is null", Toast.LENGTH_SHORT).show();
+
+             SharedPreferences sp = getSharedPreferences(ProductAdapter.getPrefsName()+packKey,Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(ProductAdapter.getLastCompletionTimeKey()+packKey,getCurrentDate());
+            editor.apply();
+            Toast.makeText(this, "Error last time is saved. As we need it.", Toast.LENGTH_SHORT).show();
+           /* DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
+            dbRef.child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("userPackUpdateTime").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
-                        String currDate = ""+snapshot.child("lastCompletionTime").getValue();
-                        lastCompletionTime[0] = currDate;
+                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                            String packId = ""+dataSnapshot.child("packId").getValue();
+                            if (packId.equals(packKey)){
+                                 dbTime[0] = ""+dataSnapshot.child("lastCompletionTime").getValue();
+                                Toast.makeText(IncomeActivity.this, "Database time is: "+ dbTime[0], Toast.LENGTH_SHORT).show();
+                                //lastCompletionTime[0] = dbTime;
+
+
+
+                            }
+                        }
+
                     }
                 }
 
@@ -379,16 +401,33 @@ public class IncomeActivity extends AppCompatActivity {
 
                 }
             });
+
+            doAsDatabase(dbTime[0]);*/
+            return false;
         }else {
-            lastCompletionTime[0] = getLastCompletionTime(this);
-        }*/
-        String lastCompletionDate = getLastCompletionTime(this,packKey);
+
+            lastCompletionTime[0] = getLastCompletionTime(this,packKey);
+            Toast.makeText(this, "No last completion time is not null", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+       // String lastCompletionDate = getLastCompletionTime(this,packKey);
         String currentDate = getCurrentDate();
 
-        Toast.makeText(this, "At last : "+packKey, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Last completion Date: "+lastCompletionDate, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "At last : "+packKey, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Last completion Date: "+lastCompletionDate, Toast.LENGTH_SHORT).show();
 
-        if (!lastCompletionDate.equals(currentDate)){
+        if (!lastCompletionTime[0].equals(currentDate)){
            /*SharedPreferences sp = getSharedPreferences(ProductAdapter.getPrefsName()+packKey,Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString(ProductAdapter.getLastCompletionTimeKey()+packKey,currentDate);
@@ -411,6 +450,26 @@ public class IncomeActivity extends AppCompatActivity {
         Date currentDate = Calendar.getInstance().getTime();
         return simpleDateFormat.format(currentDate);
 
+    }
+
+    private boolean doAsDatabase(String dataTime){
+        String curDate = getCurrentDate();
+        if (!dataTime.equals(curDate)){
+
+           /*SharedPreferences sp = getSharedPreferences(ProductAdapter.getPrefsName()+packKey,Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(ProductAdapter.getLastCompletionTimeKey()+packKey,currentDate);
+            editor.apply();*/
+
+            // saveLastCompletionTimeToDatabase();*/
+
+            Toast.makeText(this, "At last packKey is: "+packKey, Toast.LENGTH_SHORT).show();
+
+            return true;
+        }else {
+            Toast.makeText(this, "At last packKey is: "+packKey, Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
 
@@ -544,5 +603,30 @@ public class IncomeActivity extends AppCompatActivity {
                     }
                 });
     }
+
+   /* private void toKnowDateDatabase(){
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        dbRef.child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("userPackUpdateTime").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        String packId = ""+dataSnapshot.child("packId").getValue();
+                        if (packId.equals(packKey)){
+                            String lastComTime = ""+dataSnapshot.child("lastCompletionTime").getValue();
+                            String myPaKey = ""+dataSnapshot.child("packId").getValue();
+                            Toast.makeText(IncomeActivity.this, "Database packKey is: "+myPaKey, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(IncomeActivity.this, "Database date is: "+lastComTime, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }*/
 
 }

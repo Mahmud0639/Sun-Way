@@ -321,6 +321,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                                                           saveLastCompletionTimeToDatabase();*/
                                                                             //saveLastCompletionTimeToDatabase();
                                                                             saveLastCompletionTime(context,data.getPackId());
+                                                                           // saveLastCompletionTimeToDatabase(data.getPackId());
 
                                                                         }
                                                                     });
@@ -563,14 +564,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return simpleDateFormat.format(currentDate);
 
     }
-    private void saveLastCompletionTimeToDatabase(){
+    private void saveLastCompletionTimeToDatabase(String paId){
         progressDialog.setMessage("Updating your time...");
 
-        HashMap<String,Object> hm = new HashMap<>();
+
         String currentDate = getCurrentDate();
+
+        HashMap<String,Object> hm = new HashMap<>();
         hm.put("lastCompletionTime",""+currentDate);
+        hm.put("packId",""+paId);
+
+
+
         DatabaseReference myD = FirebaseDatabase.getInstance().getReference();
-        myD.child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).updateChildren(hm)
+        myD.child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("userPackUpdateTime").child(paId).updateChildren(hm)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
