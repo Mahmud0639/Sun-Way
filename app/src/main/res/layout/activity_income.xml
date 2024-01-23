@@ -7,9 +7,14 @@
     android:background="#503535"
     tools:context=".IncomeActivity">
 
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
 
         <TextView
             android:id="@+id/productTxt"
@@ -132,6 +137,7 @@
             android:layout_marginTop="@dimen/_10mdp"
             app:layout_constraintBottom_toTopOf="@id/nextBtn"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/productTxt"
             app:layout_constraintVertical_chainStyle="packed" />

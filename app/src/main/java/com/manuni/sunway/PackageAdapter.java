@@ -1,5 +1,6 @@
 package com.manuni.sunway;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
         return new PackageAdapterViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(PackageAdapterViewHolder holder, int position) {
         PackageModel data = list.get(position);
@@ -124,7 +126,24 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageA
         holder.binding.perOrder.setText(String.format("$%.2f",perOrderOf));
 
       //  holder.binding.dailyProductPrice.setText("$" + perOrderTxt + ".00");
-        holder.binding.dailyProductPrice.setText(String.format("$%.2f",perOrderOf));
+
+        int perOrderAsInt = Integer.parseInt(perOrderTxt);
+
+        if (perOrderAsInt==1){
+            holder.binding.dailyProductPrice.setText("3%");
+        }else if (perOrderAsInt==2){
+            holder.binding.dailyProductPrice.setText("3.5%");
+        }else if (perOrderAsInt==3){
+            holder.binding.dailyProductPrice.setText("4%");
+        }else if (perOrderAsInt==4){
+            holder.binding.dailyProductPrice.setText("4.5%");
+        }else if (perOrderAsInt==5){
+            holder.binding.dailyProductPrice.setText("5%");
+        }else if (perOrderAsInt==6){
+            holder.binding.dailyProductPrice.setText("5.5%");
+        }else {
+            holder.binding.dailyProductPrice.setText(String.valueOf(Integer.parseInt(perOrderTxt)+"%"));
+        }
 
         holder.binding.priceBtn.setText(String.format("Price: $%.2f",sellPriceOf));
 

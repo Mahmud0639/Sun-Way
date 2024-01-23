@@ -66,7 +66,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         myD = FirebaseDatabase.getInstance().getReference();
         myUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        //SharedPreferences sp = context.getSharedPreferences(PREFS_NAME_NEW+pacKey,Context.MODE_PRIVATE);
 
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Processing sale...");
@@ -275,6 +274,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                                 }
                                             });
+                                }else if (getItemCount()<1){//ei block tuku add koresilam last time jodi kono problem hoy app a tahole cut kore dibo ei block tuku
+                                    Toast.makeText(context, "Last Item may be", Toast.LENGTH_SHORT).show();
                                 }else {
 
                                     progressDialog.show();
@@ -314,14 +315,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                                                                             Toast.makeText(context, "You have successfully sold this product.", Toast.LENGTH_SHORT).show();
                                                                             progressDialog.dismiss();
-                                                                            Toast.makeText(context, "Pack Id is: "+data.getPackId(), Toast.LENGTH_SHORT).show();
-                                                                            //after this we should store all the info of 24 hours task
-                                                                            //PREFS_NAME = ""+totalBal;
-                                                                           /* saveLastCompletionTime(context);
-                                                                          saveLastCompletionTimeToDatabase();*/
-                                                                            //saveLastCompletionTimeToDatabase();
+
                                                                             saveLastCompletionTime(context,data.getPackId());
-                                                                           // saveLastCompletionTimeToDatabase(data.getPackId());
+
 
                                                                         }
                                                                     });
@@ -349,7 +345,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                             }
                         });
 
-              //  Toast.makeText(context, "Button clicked at position: "+position+" and list size is "+list.size(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -359,90 +354,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.binding.buyText.setText("Buy:$"+data.getPerOrder()+".00");
 
 
-
-        /*// myD = FirebaseDatabase.getInstance().getReference().child("Users");
-        myD.child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String mEqualPos = ""+snapshot.child("equalPosition").getValue();
-                Toast.makeText(context, ""+mEqualPos, Toast.LENGTH_SHORT).show();
-                equalPosition = Integer.parseInt(mEqualPos);
-
-
-                int productNum = Integer.parseInt(data.getProductNumber());
-
-                Toast.makeText(context, ""+equalPosition, Toast.LENGTH_SHORT).show();
-
-                if (productNum==equalPosition){
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    // isRunning = true;
-
-
-            *//*HashMap<String,Object> hashMap = new HashMap<>();
-            hashMap.put("visibility","Yes");
-
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SpecificUsersIncomePack");
-            ref.child(FirebaseAuth.getInstance().getUid()).child(data.getPackId()).child(data.getProductId()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    Toast.makeText(context, "Visibility is Yes now for "+productNum, Toast.LENGTH_SHORT).show();
-                }
-            });*//*
-                    // if (data.getProductNumber().equals("1"))
-                    //  makeVisible();
-                }else {
-                    holder.itemView.setVisibility(View.GONE);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-*/
-
-
-
-
-
-/*
-        holder.binding.confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-*//*                Toast.makeText(context, "First can be deleted now.", Toast.LENGTH_SHORT).show();
-
-
-                int incrementedEqPos = equalPosition + 1;
-
-                HashMap<String,Object> hashMap = new HashMap<>();
-
-                hashMap.put("equalPosition",""+incrementedEqPos);
-
-
-                myD.child("Users").child(FirebaseAuth.getInstance().getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(context, "after incrementing equalPosition is : "+equalPosition, Toast.LENGTH_SHORT).show();
-                    }
-                });*//*
-
-            }
-        });
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        try {
-            Picasso.get().load(data.getProductImage()).into(holder.binding.taskImage);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }*/
 
 
     }
@@ -498,25 +409,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             binding = BuyProductIncomeBinding.bind(itemView);
         }
 
-     /*   public void bind(product_model item) {
-            try {
-                Picasso.get().load(item.getProductImage()).into(binding.taskImage);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            binding.sellText.setText(item.getProductSellingPrice());
-
-            binding.confirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button click event
-                    // ...
-
-                    // Move to the next item
-                    moveToNextItem();
-                }
-            });
-        }*/
     }
     public static String getPrefsName(){
         //return PREFS_NAME;
@@ -526,36 +418,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
        // return LAST_COMPLETION_TIME_KEY;
         return LAST_COMPLETION_DATE_KEY;
     }
-  /*  public static String getPackKey(){
 
-    }*/
 
     public static void saveLastCompletionTime(Context context,String pack) {
         Toast.makeText(context, "My packKey is: "+pack, Toast.LENGTH_SHORT).show();
 
-      //  Toast.makeText(context, "Pref Name is : "+PREFS_NAME, Toast.LENGTH_SHORT).show();
 
-       /* SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        long currentTimeMillis = System.currentTimeMillis();
-        editor.putLong(LAST_COMPLETION_TIME_KEY, currentTimeMillis);
-        editor.apply();*/
 
         SharedPreferences sp = context.getSharedPreferences(PREFS_NAME_NEW+pack,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-
-        //Toast.makeText(context, "The last time is: "+sp.getString(PREFS_NAME_NEW,""), Toast.LENGTH_SHORT).show();
-        //Log.d("MyTag", "saveLastCompletionTime: "+sp.getString(PREFS_NAME_NEW+pack,""));
-
 
         String currentDate = getCurrentDate();
 
         editor.putString(LAST_COMPLETION_DATE_KEY+pack,currentDate);
 
-        //Log.d("MyTag", "saveLastCompletionTime: "+sp.getString(LAST_COMPLETION_DATE_KEY+pack,""));
         editor.apply();
         Toast.makeText(context, "Time has saved successfully!", Toast.LENGTH_SHORT).show();
-        //saveLastCompletionTimeToDatabase();
+
     }
 
     private static String getCurrentDate(){
@@ -564,34 +443,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return simpleDateFormat.format(currentDate);
 
     }
-    private void saveLastCompletionTimeToDatabase(String paId){
-        progressDialog.setMessage("Updating your time...");
 
-
-        String currentDate = getCurrentDate();
-
-        HashMap<String,Object> hm = new HashMap<>();
-        hm.put("lastCompletionTime",""+currentDate);
-        hm.put("packId",""+paId);
-
-
-
-        DatabaseReference myD = FirebaseDatabase.getInstance().getReference();
-        myD.child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("userPackUpdateTime").child(paId).updateChildren(hm)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-               progressDialog.dismiss();
-               // Toast.makeText(context, "You will be able to income again after midnight", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-progressDialog.dismiss();
-            }
-        });
-    }
 
 
 }

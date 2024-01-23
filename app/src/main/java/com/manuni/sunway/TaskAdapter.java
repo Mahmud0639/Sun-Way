@@ -85,7 +85,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
            e.printStackTrace();
         }
 
-        holder.binding.levelName.setText("VIP: "+data.getLevelName());
+        holder.binding.levelName.setText("$"+data.getSellingPrice());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

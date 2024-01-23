@@ -91,7 +91,7 @@
             android:id="@+id/levelName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VIP: LV1"
+            android:text="fetching..."
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_bold"/>
 
